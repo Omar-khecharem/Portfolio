@@ -11,9 +11,8 @@ const projectSchema = new mongoose.Schema({
   liveUrl: { type: String },
   category: {
     type: String,
-    enum: ['fullstack', 'ai', 'freelance', 'academic'],
     required: [true, 'Category is required'],
-    default: 'fullstack',
+    default: '',
   },
   status: { type: String, enum: ['completed', 'in-progress', 'planned'], default: 'completed' },
   featured: { type: Boolean, default: false },

@@ -36,7 +36,7 @@ export default function FeaturedProjects() {
           transition={{ duration: 0.6, ease }}
           className="text-center mb-14"
         >
-          <p className="section-label">Portfolio</p>
+          <p className="section-label gradient-text-alt font-bold">Portfolio</p>
           <h2 className="text-3xl md:text-4xl font-bold text-primary">Selected Projects</h2>
           <p className="text-text-muted mt-3 max-w-lg mx-auto">
             A selection of featured work in full-stack development and AI.
@@ -54,7 +54,7 @@ export default function FeaturedProjects() {
             <motion.div
               key={p._id}
               variants={item}
-              className="card rounded-lg overflow-hidden group"
+              className="card card-enhanced rounded-lg overflow-hidden group"
             >
               <div className="h-36 sm:h-44 bg-surface geo-dot flex items-center justify-center relative overflow-hidden">
                 {p.image ? (

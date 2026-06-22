@@ -128,7 +128,7 @@ export default function Hero() {
         >
           <span className="whitespace-nowrap">{profile.name.split(' ')[0]}</span>
           <br />
-          <span className="text-white/70 font-light whitespace-nowrap">{profile.name.split(' ').slice(1).join(' ')}</span>
+          <span className="text-white/60 font-light whitespace-nowrap">{profile.name.split(' ').slice(1).join(' ')}</span>
         </motion.h1>
 
         <motion.p

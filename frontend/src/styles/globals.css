@@ -14,7 +14,7 @@
   --sp-section:     120px;
 }
 
-/* SWISS GEOMETRIC GRID */
+/* === CORE === */
 html {
   scroll-behavior: smooth;
 }
@@ -25,6 +25,127 @@ body {
   color: var(--clr-text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+/* === CUSTOM SCROLLBAR === */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--clr-line); border-radius: 3px; transition: background 0.3s; }
+::-webkit-scrollbar-thumb:hover { background: var(--clr-text-muted); }
+* { scrollbar-width: thin; scrollbar-color: var(--clr-line) transparent; }
+
+/* === AMBIENT ORB DRIFT === */
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(40px, -50px) scale(1.08); }
+  50% { transform: translate(-30px, 35px) scale(0.92); }
+  75% { transform: translate(50px, 25px) scale(1.04); }
+}
+
+/* === PARTICLE RISE === */
+@keyframes particle-rise {
+  0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  8%   { opacity: var(--p-opacity, 0.4); }
+  85%  { opacity: var(--p-opacity, 0.4); }
+  100% { transform: translateY(-110vh) translateX(40px) scale(0.3); opacity: 0; }
+}
+
+/* === SHAPE DRIFT === */
+@keyframes shape-drift {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-35px) rotate(180deg); }
+}
+
+/* === PULSE RING === */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--clr-accent) 50%, transparent); }
+  70% { box-shadow: 0 0 0 15px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* === FLOAT UP === */
+@keyframes float-up {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* === SHIMMER TEXT === */
+@keyframes shimmer-text {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* === GRADIENT TEXT === */
+.gradient-text {
+  background: linear-gradient(135deg, var(--clr-accent), var(--clr-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-alt {
+  background: linear-gradient(135deg, var(--clr-primary), var(--clr-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* === ENHANCED GLASS === */
+.glass-deep {
+  background: color-mix(in srgb, var(--clr-surface) 50%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--clr-line);
+}
+
+/* === GLOW HOVER (cards/buttons) === */
+.glow-hover {
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+.glow-hover:hover {
+  box-shadow: 0 0 30px color-mix(in srgb, var(--clr-accent) 25%, transparent);
+}
+
+/* === CARD ENHANCED === */
+.card-enhanced {
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card-enhanced:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08), 0 0 30px color-mix(in srgb, var(--clr-accent) 15%, transparent);
+  border-color: color-mix(in srgb, var(--clr-accent) 60%, transparent);
+}
+
+/* === SECTION DIVIDER === */
+.section-divider {
+  position: relative;
+}
+.section-divider::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 400px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--clr-line), transparent);
+}
+
+/* === DECORATIVE SLANT === */
+.slant-left {
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+.slant-right {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 85%);
+}
+
+/* === PARTICLE DOT === */
+.particle-dot {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-rise linear infinite;
 }
 
 .geo-grid {
@@ -93,6 +214,7 @@ body {
 .btn-primary:hover {
   background: var(--clr-accent);
   transform: translateY(-2px);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--clr-accent) 30%, transparent);
 }
 .btn-outline {
   background: transparent;

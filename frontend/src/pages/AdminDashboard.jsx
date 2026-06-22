@@ -4,17 +4,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import {
   LayoutDashboard, User, FolderKanban, Award, Palette,
-  BarChart3, Zap, Mail, Tags, LogOut,
+  BarChart3, Zap, Mail, Tags, LogOut, BookOpen, Sparkles, Bot,
 } from 'lucide-react';
 
 import OverviewPanel from '../components/admin/OverviewPanel';
 import AnalyticsPanel from '../components/admin/AnalyticsPanel';
 import CategoriesPanel from '../components/admin/CategoriesPanel';
+import BackgroundPanel from '../components/admin/BackgroundPanel';
+import AmbiancePanel from '../components/admin/AmbiancePanel';
 import SkillsPanel from '../components/admin/SkillsPanel';
 import MessagesPanel from '../components/admin/MessagesPanel';
 import ProfilePanel from '../components/admin/ProfilePanel';
 import ProjectsPanel from '../components/admin/ProjectsPanel';
 import CertsPanel from '../components/admin/CertsPanel';
+import ChatbotPanel from '../components/admin/ChatbotPanel';
 import ThemePanel from '../components/admin/ThemePanel';
 
 const TABS = [
@@ -23,9 +26,12 @@ const TABS = [
   { key: 'profile',   label: 'Profile',   icon: User },
   { key: 'messages', label: 'Messages', icon: Mail },
   { key: 'categories', label: 'Categories', icon: Tags },
+  { key: 'background', label: 'Background', icon: BookOpen },
   { key: 'skills',      label: 'Skills',      icon: Zap },
   { key: 'projects',  label: 'Projects',  icon: FolderKanban },
   { key: 'certs',     label: 'Certifications', icon: Award },
+  { key: 'ambiance',  label: 'Ambiance',  icon: Sparkles },
+  { key: 'chatbot',   label: 'Chatbot',   icon: Bot },
   { key: 'theme',     label: 'Theme',     icon: Palette },
 ];
 
@@ -115,11 +121,14 @@ export default function AdminDashboard() {
               {tab === 'overview' && <OverviewPanel />}
               {tab === 'analytics' && <AnalyticsPanel />}
               {tab === 'categories' && <CategoriesPanel />}
+              {tab === 'background' && <BackgroundPanel />}
               {tab === 'skills' && <SkillsPanel />}
               {tab === 'messages' && <MessagesPanel />}
               {tab === 'profile'  && <ProfilePanel />}
               {tab === 'projects' && <ProjectsPanel />}
               {tab === 'certs'    && <CertsPanel />}
+              {tab === 'ambiance' && <AmbiancePanel />}
+              {tab === 'chatbot'  && <ChatbotPanel />}
               {tab === 'theme'    && <ThemePanel />}
             </motion.div>
           </AnimatePresence>

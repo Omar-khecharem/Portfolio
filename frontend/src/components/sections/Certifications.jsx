@@ -24,7 +24,7 @@ export default function Certifications() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <p className="section-label">Credentials</p>
+          <p className="section-label gradient-text-alt font-bold">Credentials</p>
           <h2 className="text-3xl md:text-4xl font-bold text-primary">Certifications</h2>
         </motion.div>
 
@@ -36,7 +36,7 @@ export default function Certifications() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
-              className="card rounded-xl overflow-hidden group cursor-pointer"
+              className="card card-enhanced rounded-xl overflow-hidden group cursor-pointer"
               onClick={() => setSelected(c)}
             >
               <div className="h-36 sm:h-44 bg-surface relative overflow-hidden">

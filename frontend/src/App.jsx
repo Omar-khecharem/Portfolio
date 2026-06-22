@@ -7,6 +7,7 @@ import ScrollToTop from './components/ui/ScrollToTop';
 import CookieBanner from './components/ui/CookieBanner';
 import VisitTracker from './components/ui/VisitTracker';
 import TabTitle from './components/ui/TabTitle';
+import FixedAmbient from './components/ui/FixedAmbient';
 import Home from './pages/Home';
 import About from './pages/About';
 import Projects from './pages/Projects';
@@ -36,13 +37,16 @@ function AnimatedOutlet() {
 function MainLayout() {
   return (
     <>
-      <Navbar />
-      <main className="flex-1">
-        <AnimatedOutlet />
-      </main>
-      <Footer />
-      <ChatBot />
-      <CookieBanner />
+      <FixedAmbient />
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-1">
+          <AnimatedOutlet />
+        </main>
+        <Footer />
+        <ChatBot />
+        <CookieBanner />
+      </div>
     </>
   );
 }

@@ -80,14 +80,15 @@ function ProjectModal({ project, onClose, onSaved }) {
       onSaved();
       onClose();
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to save');
+      const msg = err.response?.data?.message || 'Failed to save';
+      toast.error(msg, { duration: 5000 });
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm">
       <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
         className="bg-white rounded-xl max-w-lg w-full max-h-[85vh] overflow-y-auto p-6"
         onClick={(e) => e.stopPropagation()}

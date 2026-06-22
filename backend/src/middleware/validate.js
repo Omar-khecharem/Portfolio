@@ -4,7 +4,7 @@ const handleErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
-      message: 'Validation failed',
+      message: errors.array().map(e => `"${e.path}" : ${e.msg}`).join(' ; '),
       errors: errors.array().map(e => ({ field: e.path, message: e.msg })),
     });
   }
@@ -19,7 +19,7 @@ const loginRules = [
 const projectRules = [
   body('title').trim().notEmpty().withMessage('Title is required'),
   body('description').trim().notEmpty().withMessage('Description is required'),
-  body('category').isIn(['fullstack', 'ai', 'freelance', 'academic']).withMessage('Invalid category'),
+  body('category').trim().notEmpty().withMessage('Category is required'),
 ];
 
 const certificationRules = [

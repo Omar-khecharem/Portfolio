@@ -44,7 +44,7 @@ export default function Projects() {
               className="w-14 h-14 mx-auto mb-5 rounded-2xl bg-primary/5 flex items-center justify-center">
               <Briefcase size={26} className="text-primary" />
             </motion.div>
-            <p className="section-label">Portfolio</p>
+            <p className="section-label gradient-text-alt font-bold">Portfolio</p>
             <h1 className="text-3xl md:text-4xl font-bold text-primary">All Projects</h1>
             <p className="text-text-muted mt-3 max-w-lg mx-auto">
               Full-stack applications, AI experiments, and freelance work.
@@ -68,7 +68,7 @@ export default function Projects() {
           >
             {filtered.map((p) => (
               <motion.div key={p._id} variants={item}
-                className="card rounded-lg overflow-hidden group"
+                className="card card-enhanced rounded-lg overflow-hidden group"
               >
                 <div className="h-36 sm:h-44 bg-surface geo-dot flex items-center justify-center relative overflow-hidden">
                   {p.image ? (

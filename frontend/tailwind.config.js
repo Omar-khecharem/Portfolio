@@ -24,6 +24,9 @@ export default {
         'fade-up': 'fadeUp 0.7s ease-out forwards',
         'fade-in': 'fadeIn 0.5s ease-out forwards',
         'scale-in': 'scaleIn 0.4s ease-out forwards',
+        'pulse-ring': 'pulse-ring 2s ease-in-out infinite',
+        'float-up': 'float-up 3s ease-in-out infinite',
+        'shimmer-text': 'shimmer-text 3s linear infinite',
       },
       keyframes: {
         float: {

@@ -27,7 +27,7 @@ export default function About() {
               className="w-14 h-14 mx-auto mb-5 rounded-2xl bg-primary/5 flex items-center justify-center">
               <User size={26} className="text-primary" />
             </motion.div>
-            <p className="section-label">About Me</p>
+            <p className="section-label gradient-text-alt font-bold">About Me</p>
             <h1 className="text-3xl md:text-4xl font-bold text-primary">Who I Am</h1>
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
@@ -93,7 +93,7 @@ export default function About() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.05 }}
-                        className="card rounded-xl overflow-hidden cursor-pointer"
+                         className="card card-enhanced rounded-xl overflow-hidden cursor-pointer"
                         onClick={() => c.image && setSelectedCert(c)}
                       >
                         {c.image && (

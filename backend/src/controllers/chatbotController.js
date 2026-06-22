@@ -1,14 +1,13 @@
 const Profile = require('../models/Profile');
 const Project = require('../models/Project');
 const Certification = require('../models/Certification');
+const ChatConfig = require('../models/ChatConfig');
 
 const buildCVContext = async () => {
   const profile = await Profile.findOne();
   if (!profile) return {};
-
   const projects = await Project.find().sort({ order: 1 }).lean();
   const certifications = await Certification.find().sort({ order: 1 }).lean();
-
   return {
     name: profile.name,
     title: profile.title,
@@ -27,72 +26,73 @@ const buildCVContext = async () => {
   };
 };
 
-const buildSystemPrompt = (cv) => {
+const buildSystemPrompt = (cv, config) => {
   const p = cv || {};
+  const c = config || {};
 
-  const skillsText = (p.skills || [])
-    .map(s => `- ${s.name} (${s.category}, ${s.level}%)`).join('\n');
-  const experienceText = (p.experience || [])
-    .map(e => `- ${e.role} @ ${e.company} (${e.period}): ${e.description || ''}`).join('\n');
-  const projectsList = (p.projects || []).slice(0, 6)
-    .map(pr => `- ${pr.title}: ${pr.description} [${(pr.technologies || []).join(', ')}]`).join('\n');
-  const educationText = (p.education || [])
-    .map(ed => `- ${ed.degree}, ${ed.institution} (${ed.period})`).join('\n');
-  const certsText = (p.certifications || [])
-    .map(c => `- ${c.name} (${c.issuer}, ${c.date || 'N/A'})`).join('\n');
-  const languagesText = (p.languages || [])
-    .map(l => `- ${l.name}: ${l.level}`).join('\n');
-  const servicesText = (p.services || [])
-    .map(s => `- ${s.title}: ${s.description}`).join('\n');
+  const sections = [];
+  sections.push(`You are Omar Assistant — the official AI assistant of Omar KHECHAREM.\n`);
 
-  return `You are Omar Assistant — the official AI assistant of Omar KHECHAREM.
+  sections.push(`ROLE:\n${c.role || 'You represent a freelance Full-Stack Developer portfolio.'}\n`);
 
-ROLE:
-You represent a freelance Full-Stack Developer portfolio.
+  if (c.personality) {
+    sections.push(`PERSONALITY:\n${c.personality}\n`);
+  }
 
-PERSONALITY:
-- professional
-- concise
-- confident
-- recruiter-friendly
+  const allRules = [...(c.defaultRules || []), ...(c.rules || [])];
+  if (allRules.length > 0) {
+    sections.push(`RULES:\n${allRules.map(r => `- ${r}`).join('\n')}\n`);
+  }
 
-RULES:
-- ONLY answer questions about Omar: his skills, experience, projects, certifications, freelance services, education, and contact.
-- If asked ANYTHING unrelated, respond with exactly:
-  "I can only provide information about Omar's professional profile."
-- Never hallucinate information. If you don't know, say so.
-- Be brief. 2-3 sentences max. No markdown.
-- If someone wants to hire or contact Omar, encourage them to visit the Contact page or email omar.khecharem@isimg.tn.
-
-OMAR'S PROFILE DATA:
+  sections.push(`OMAR'S PROFILE DATA:
 Name: ${p.name || 'Omar KHECHAREM'}
 Title: ${p.title || 'Full-Stack Developer (MERN) | AI Enthusiast | Engineering Student'}
 Location: ${p.location || 'Ariana, Tunisia'}
 Email: ${p.email || 'omar.khecharem@isimg.tn'}
 GitHub: ${(p.social && p.social.github) || 'https://github.com/Omar-khecharem'}
 LinkedIn: ${(p.social && p.social.linkedin) || 'https://linkedin.com/in/omar-khecharem-373b16241'}
-Available: ${p.available !== false ? 'Yes – open for freelance and internships' : 'Currently unavailable'}
+Available: ${p.available !== false ? 'Yes – open for freelance and internships' : 'Currently unavailable'}`);
 
-SKILLS:
-${skillsText || 'No skills data provided.'}
+  if (c.showSkills !== false) {
+    const skillsText = (p.skills || []).map(s => `- ${s.name} (${s.category}, ${s.level}%)`).join('\n');
+    sections.push(`\nSKILLS:\n${skillsText || 'No skills data provided.'}`);
+  }
+  if (c.showExperience !== false) {
+    const experienceText = (p.experience || []).map(e => `- ${e.role} @ ${e.company} (${e.period}): ${e.description || ''}`).join('\n');
+    sections.push(`\nEXPERIENCE:\n${experienceText || 'No experience data provided.'}`);
+  }
+  if (c.showProjects !== false) {
+    const projectsList = (p.projects || []).slice(0, c.maxContextProjects || 6).map(pr => `- ${pr.title}: ${pr.description} [${(pr.technologies || []).join(', ')}]`).join('\n');
+    sections.push(`\nPROJECTS:\n${projectsList || 'No projects data provided.'}`);
+  }
+  if (c.showEducation !== false) {
+    const educationText = (p.education || []).map(ed => `- ${ed.degree}, ${ed.institution} (${ed.period})`).join('\n');
+    sections.push(`\nEDUCATION:\n${educationText || 'No education data provided.'}`);
+  }
+  if (c.showCertifications !== false) {
+    const certsText = (p.certifications || []).map(cert => `- ${cert.name} (${cert.issuer}, ${cert.date || 'N/A'})`).join('\n');
+    sections.push(`\nCERTIFICATIONS:\n${certsText || 'No certifications data provided.'}`);
+  }
+  if (c.showLanguages !== false) {
+    const languagesText = (p.languages || []).map(l => `- ${l.name}: ${l.level}`).join('\n');
+    sections.push(`\nLANGUAGES:\n${languagesText || 'No languages data provided.'}`);
+  }
+  if (c.showServices !== false) {
+    const servicesText = (p.services || []).map(s => `- ${s.title}: ${s.description}`).join('\n');
+    sections.push(`\nSERVICES:\n${servicesText || 'No services data provided.'}`);
+  }
 
-EXPERIENCE:
-${experienceText || 'No experience data provided.'}
+  let result = sections.join('\n');
+  if (c.briefMode !== false) {
+    result += '\n\nIMPORTANT: Be brief. 2-3 sentences max. No markdown.';
+  }
+  if (c.allowMarkdown) {
+    result += '\n\nYou may use basic markdown for formatting.';
+  } else {
+    result += '\n\nNo markdown. Use plain text only.';
+  }
 
-PROJECTS:
-${projectsList || 'No projects data provided.'}
-
-EDUCATION:
-${educationText || 'No education data provided.'}
-
-CERTIFICATIONS:
-${certsText || 'No certifications data provided.'}
-
-LANGUAGES:
-${languagesText || 'No languages data provided.'}
-
-SERVICES:
-${servicesText || 'No services data provided.'}`;
+  return result;
 };
 
 exports.chat = async (req, res, next) => {
@@ -110,12 +110,21 @@ exports.chat = async (req, res, next) => {
       return res.status(501).json({ reply: 'Chatbot service not configured. Set CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN in backend .env' });
     }
 
-    const cv = await buildCVContext();
-    const systemPrompt = buildSystemPrompt(cv);
+    const [cv, config] = await Promise.all([
+      buildCVContext(),
+      ChatConfig.findOne({ isActive: true }),
+    ]);
+
+    const fallback = (config && config.fallbackResponse) || "I can only provide information about Omar's professional profile.";
+    const maxHistory = (config && config.maxHistoryMessages) || 6;
+    const temperature = (config && config.temperature) || 0.5;
+    const maxTokens = (config && config.maxTokens) || 256;
+
+    const systemPrompt = buildSystemPrompt(cv, config);
 
     const messages = [
       { role: 'system', content: systemPrompt },
-      ...(history || []).slice(-6).map(m => ({ role: m.role, content: m.content })),
+      ...(history || []).slice(-maxHistory).map(m => ({ role: m.role, content: m.content })),
       { role: 'user', content: message.trim() },
     ];
 
@@ -127,8 +136,8 @@ exports.chat = async (req, res, next) => {
       },
       body: JSON.stringify({
         messages,
-        max_tokens: 256,
-        temperature: 0.5,
+        max_tokens: maxTokens,
+        temperature,
       }),
     });
 
@@ -136,11 +145,11 @@ exports.chat = async (req, res, next) => {
 
     if (!data.success) {
       console.error('Cloudflare AI error:', data.errors);
-      return res.status(502).json({ reply: 'Chatbot service is temporarily unavailable.' });
+      return res.status(502).json({ reply: fallback });
     }
 
     const reply = (data.result?.response || '').trim();
-    res.json({ reply: reply || "I can only provide information about Omar's professional profile." });
+    res.json({ reply: reply || fallback });
   } catch (err) {
     console.error('Chat error:', err);
     res.status(502).json({ reply: 'Chatbot service is temporarily unavailable.' });

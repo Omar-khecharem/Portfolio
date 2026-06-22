@@ -24,7 +24,7 @@ export default function Navbar() {
   const navDark = isHome && !scrolled;
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-400 ${navDark ? '' : 'glass'} ${navDark ? 'nav-dark' : ''}`}>
+    <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-400 ${navDark ? '' : 'glass-deep'} ${navDark ? 'nav-dark' : ''}`}>
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16 md:h-20">
           <a href="/" className="text-lg font-bold tracking-tight">
             OMAR<span className={navDark ? 'text-white/80' : 'text-accent'}>.</span>

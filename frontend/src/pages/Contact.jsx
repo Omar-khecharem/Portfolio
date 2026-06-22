@@ -49,7 +49,7 @@ export default function Contact() {
               className="w-14 h-14 mx-auto mb-5 rounded-2xl bg-accent/10 flex items-center justify-center">
               <MessageCircle size={26} className="text-accent" />
             </motion.div>
-            <p className="section-label">Get in Touch</p>
+            <p className="section-label gradient-text-alt font-bold">Get in Touch</p>
             <h1 className="text-3xl md:text-4xl font-bold text-primary">Let&apos;s Work Together</h1>
             <p className="text-text-muted mt-3 max-w-lg mx-auto">
               Available for freelance projects, internships, and collaborations.
@@ -58,14 +58,14 @@ export default function Contact() {
 
           <div className="grid md:grid-cols-5 gap-10 max-w-4xl mx-auto">
             <div className="md:col-span-2 space-y-4">
-              <div className="bg-white border border-line rounded-xl p-5">
+              <div className="bg-white border border-line rounded-xl p-5 card-enhanced">
                 <h3 className="text-sm font-semibold mb-3">Contact Info</h3>
                 <div className="space-y-3 text-sm text-text-muted">
                   <p className="flex items-center gap-2"><Mail size={14} className="text-accent" /> omar.khecharem@isimg.tn</p>
                   <p className="flex items-center gap-2"><MapPin size={14} className="text-accent" /> Ariana, Tunisia</p>
                 </div>
               </div>
-              <div className="bg-white border border-line rounded-xl p-5">
+              <div className="bg-white border border-line rounded-xl p-5 card-enhanced">
                 <h3 className="text-sm font-semibold mb-3">Social</h3>
                 <div className="flex gap-3">
                   {SOCIALLINKS.map(({ icon: Icon, href }) => (
@@ -74,7 +74,7 @@ export default function Contact() {
                   ))}
                 </div>
               </div>
-              <div className="bg-white border border-line rounded-xl p-5">
+              <div className="bg-white border border-line rounded-xl p-5 card-enhanced">
                 <div className="flex items-center gap-2 text-sm text-green-600 font-medium">
                   <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
                   Available for freelance &amp; internships

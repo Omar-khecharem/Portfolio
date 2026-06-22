@@ -22,7 +22,7 @@ export default function Experience() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <p className="section-label">Background</p>
+          <p className="section-label gradient-text-alt font-bold">Background</p>
           <h2 className="text-3xl md:text-4xl font-bold text-primary">Experience &amp; Education</h2>
         </motion.div>
 

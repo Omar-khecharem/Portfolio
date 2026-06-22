@@ -33,6 +33,19 @@ const themeSchema = new mongoose.Schema({
   animations: {
     enabled: { type: Boolean, default: true },
     duration: { type: Number, default: 0.6 },
+    ambient: {
+      enabled: { type: Boolean, default: true },
+      orbs: { type: Boolean, default: true },
+      shapes: { type: Boolean, default: true },
+      particles: { type: Boolean, default: true },
+      mouseParallax: { type: Boolean, default: true },
+      orbsSpeed: { type: Number, default: 1.0, min: 0.3, max: 3.0 },
+      shapesSpeed: { type: Number, default: 1.0, min: 0.3, max: 3.0 },
+      particlesDensity: { type: Number, default: 35, min: 0, max: 80 },
+      orbsOpacity: { type: Number, default: 0.25, min: 0, max: 0.5 },
+      shapesOpacity: { type: Number, default: 0.12, min: 0, max: 0.3 },
+      blurIntensity: { type: Number, default: 1.0, min: 0.0, max: 2.0 },
+    },
   },
 }, { timestamps: true });
 

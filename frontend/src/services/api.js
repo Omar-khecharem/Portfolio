@@ -57,4 +57,12 @@ export const authApi = {
   me: () => api.get('/auth/me').then(r => r.data),
 };
 
+export const chatConfigApi = {
+  getActive: () => api.get('/chat-config').then(r => r.data),
+  list: () => api.get('/chat-config/all').then(r => r.data),
+  update: (id, data) => api.put(`/chat-config/${id}`, data).then(r => r.data),
+  activate: (id) => api.put(`/chat-config/${id}/activate`).then(r => r.data),
+  create: (data) => api.post('/chat-config', data).then(r => r.data),
+};
+
 export default api;

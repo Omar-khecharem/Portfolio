@@ -29,7 +29,7 @@ export default function About() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <p className="section-label">About</p>
+          <p className="section-label gradient-text-alt font-bold">About</p>
           <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">{profile.name}</h2>
           <p className="text-text-muted text-lg max-w-2xl mx-auto">{profile.title}</p>
         </motion.div>
@@ -64,7 +64,7 @@ export default function About() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               {stats.map((s) => (
-                <div key={s.label} className="text-center p-4 bg-surface border border-line rounded-lg">
+                <div key={s.label} className="text-center p-4 bg-surface border border-line rounded-lg card-enhanced">
                   <p className="text-2xl md:text-3xl font-bold text-primary">
                     <AnimatedNumber value={s.value} suffix={s.suffix || ''} />
                   </p>

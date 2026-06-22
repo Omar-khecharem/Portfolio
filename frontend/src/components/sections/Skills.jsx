@@ -40,7 +40,7 @@ export default function Skills() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <p className="section-label">Expertise</p>
+          <p className="section-label gradient-text-alt font-bold">Expertise</p>
           <h2 className="text-3xl md:text-4xl font-bold text-primary">Skills</h2>
           <p className="text-text-muted mt-3">Technologies I work with daily.</p>
         </motion.div>

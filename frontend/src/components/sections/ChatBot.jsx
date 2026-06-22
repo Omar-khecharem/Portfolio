@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send } from 'lucide-react';
 import { profileApi } from '../../services/api';
 
-const WELCOME = { role: 'assistant', content: "Hi! I'm Omar's AI assistant. Ask me about his skills, projects, experience, or freelance services!" };
+const DEFAULT_WELCOME = "Hi! I'm Omar's AI assistant. Ask me about his skills, projects, experience, or freelance services!";
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([WELCOME]);
+  const [messages, setMessages] = useState([{ role: 'assistant', content: DEFAULT_WELCOME }]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState('');
@@ -17,6 +17,9 @@ export default function ChatBot() {
 
   useEffect(() => {
     profileApi.get().then(p => setAvatar(p.image || '')).catch(() => {});
+    fetch('/api/chat-config').then(r => r.json()).then(c => {
+      if (c?.welcomeMessage) setMessages([{ role: 'assistant', content: c.welcomeMessage }]);
+    }).catch(() => {});
   }, []);
 
   const send = async () => {
@@ -47,7 +50,7 @@ export default function ChatBot() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-primary text-white rounded-full shadow-lg hover:bg-accent transition-all flex items-center justify-center hover:scale-105"
+        className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-primary text-white rounded-full shadow-lg hover:bg-accent transition-all flex items-center justify-center hover:scale-105 animate-pulse-ring"
         style={{ width: 52, height: 52 }}
         aria-label="Chat with Omar Assistant"
       >
