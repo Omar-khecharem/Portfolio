@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { projectsApi, profileApi } from '../services/api';
-import { ExternalLink, Github, FolderKanban, Briefcase } from 'lucide-react';
-
-const ease = [0.22, 1, 0.36, 1];
+import { ExternalLink, Github, FolderKanban } from 'lucide-react';
 
 const container = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.06 } },
+  visible: { transition: { staggerChildren: 0.05 } },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease } },
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
 };
 
 export default function Projects() {
@@ -30,35 +28,44 @@ export default function Projects() {
 
   const filterTags = ['all', ...categories];
   const label = (s) => s.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-
-  const filtered = activeCat === 'all'
-    ? projects
-    : projects.filter((p) => p.category === activeCat);
+  const filtered = activeCat === 'all' ? projects : projects.filter((p) => p.category === activeCat);
 
   return (
     <div className="pt-24">
       <section className="py-section">
         <div className="max-w-6xl mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease }} className="text-center mb-12">
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.1, type: 'spring', stiffness: 200, damping: 15 }}
-              className="w-14 h-14 mx-auto mb-5 rounded-2xl bg-primary/5 flex items-center justify-center">
-              <Briefcase size={26} className="text-primary" />
-            </motion.div>
-            <p className="section-label gradient-text-alt font-bold">Portfolio</p>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center mb-12"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[3px] text-accent mb-3">Portfolio</p>
             <h1 className="text-3xl md:text-4xl font-bold text-primary">All Projects</h1>
-            <p className="text-text-muted mt-3 max-w-lg mx-auto">
+            <p className="text-text-muted mt-3 max-w-lg mx-auto text-sm">
               Full-stack applications, AI experiments, and freelance work.
             </p>
           </motion.div>
 
-          <div className="flex justify-center gap-2 mb-10 flex-wrap sm:flex-nowrap">
+          {/* Filters */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="flex justify-center gap-2 mb-10 flex-wrap"
+          >
             {filterTags.map((cat) => (
               <button key={cat} onClick={() => setActiveCat(cat)}
-                className={`px-3 sm:px-4 py-2 text-sm font-medium rounded-lg transition-all ${activeCat === cat ? 'bg-primary text-white' : 'bg-surface text-text-muted hover:text-text border border-line'}`}
+                className={`px-4 py-2 text-sm font-medium rounded-full transition-all ${
+                  activeCat === cat
+                    ? 'bg-primary text-white shadow-sm'
+                    : 'bg-surface text-text-muted hover:text-text border border-line hover:border-text-muted/30'
+                }`}
               >{label(cat)}</button>
             ))}
-          </div>
+          </motion.div>
 
+          {/* Grid */}
           <motion.div
             key={activeCat}
             variants={container}
@@ -68,45 +75,64 @@ export default function Projects() {
           >
             {filtered.map((p) => (
               <motion.div key={p._id} variants={item}
-                className="card card-enhanced rounded-lg overflow-hidden group"
+                className="group relative bg-surface border border-line rounded-xl overflow-hidden hover:border-accent/30 transition-all"
               >
-                <div className="h-36 sm:h-44 bg-surface geo-dot flex items-center justify-center relative overflow-hidden">
+                {/* Image */}
+                <div className="relative h-44 bg-gradient-to-br from-primary/5 to-accent/5 overflow-hidden">
                   {p.image ? (
-                    <img src={p.image} alt={p.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <>
+                      <img src={p.image} alt={p.title}
+                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </>
                   ) : (
-                    <FolderKanban size={40} className="text-primary/10" />
+                    <div className="w-full h-full flex items-center justify-center">
+                      <FolderKanban size={36} className="text-primary/15" />
+                    </div>
                   )}
-                  <div className="absolute top-3 right-3 flex gap-1.5">
+                  {/* Status badge */}
+                  {p.status && (
+                    <span className={`absolute top-3 left-3 text-[10px] px-2 py-0.5 rounded-full font-medium backdrop-blur-sm ${
+                      p.status === 'completed' ? 'bg-green-500/15 text-green-600' :
+                      p.status === 'in-progress' ? 'bg-yellow-500/15 text-yellow-600' : 'bg-blue-500/15 text-blue-600'
+                    }`}>{p.status}</span>
+                  )}
+                  {/* Action buttons */}
+                  <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     {p.githubUrl && (
                       <a href={p.githubUrl} target="_blank" rel="noopener noreferrer"
-                        className="p-1.5 bg-white/80 hover:bg-white rounded transition-colors">
+                        className="w-7 h-7 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-text-muted hover:text-text hover:bg-white transition-all shadow-sm">
                         <Github size={13} />
                       </a>
                     )}
                     {p.liveUrl && (
                       <a href={p.liveUrl} target="_blank" rel="noopener noreferrer"
-                        className="p-1.5 bg-white/80 hover:bg-white rounded transition-colors">
+                        className="w-7 h-7 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-text-muted hover:text-text hover:bg-white transition-all shadow-sm">
                         <ExternalLink size={13} />
                       </a>
                     )}
                   </div>
                 </div>
+
+                {/* Content */}
                 <div className="p-5">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] px-2 py-0.5 bg-surface text-text-muted rounded font-medium capitalize">{p.category}</span>
-                    <span className={`text-[10px] px-2 py-0.5 rounded font-medium ${
-                      p.status === 'completed' ? 'bg-green-100 text-green-700' :
-                      p.status === 'in-progress' ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-700'
-                    }`}>{p.status}</span>
-                  </div>
-                  <h3 className="font-semibold text-base text-text mb-2">{p.title}</h3>
-                  <p className="text-sm text-text-muted line-clamp-2 mb-3">{p.description}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-text-muted/70 font-semibold mb-1.5">
+                    {label(p.category || 'uncategorized')}
+                  </p>
+                  <h3 className="font-semibold text-base text-text mb-1.5 leading-snug">{p.title}</h3>
+                  <p className="text-sm text-text-muted line-clamp-2 mb-4 leading-relaxed">{p.description}</p>
+
+                  {/* Tech tags */}
                   <div className="flex flex-wrap gap-1.5">
-                    {p.technologies?.slice(0, 3).map((t) => (
-                      <span key={t} className="text-[10px] px-2 py-0.5 bg-surface text-text-muted rounded font-medium">{t}</span>
+                    {p.technologies?.slice(0, 4).map((t) => (
+                      <span key={t}
+                        className="text-[10px] px-2 py-0.5 bg-primary/5 text-text-muted rounded font-medium"
+                      >{t}</span>
                     ))}
-                    {p.technologies?.length > 3 && (
-                      <span className="text-[10px] px-2 py-0.5 bg-surface text-text-muted rounded font-medium">+{p.technologies.length - 3}</span>
+                    {p.technologies?.length > 4 && (
+                      <span className="text-[10px] px-2 py-0.5 bg-primary/5 text-text-muted rounded font-medium">
+                        +{p.technologies.length - 4}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -115,7 +141,10 @@ export default function Projects() {
           </motion.div>
 
           {filtered.length === 0 && (
-            <p className="text-center text-text-muted py-16">No projects found in this category.</p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              className="text-center text-text-muted py-20 text-sm">
+              No projects found in this category.
+            </motion.p>
           )}
         </div>
       </section>
