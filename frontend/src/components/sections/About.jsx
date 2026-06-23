@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { profileApi } from '../../services/api';
+import { profileApi, certificationsApi } from '../../services/api';
 import { useIntersect } from '../../hooks/useIntersect';
 import AnimatedNumber from '../ui/AnimatedNumber';
 
 export default function About() {
   const [profile, setProfile] = useState(null);
+  const [certs, setCerts] = useState([]);
   const [ref, inView] = useIntersect();
 
   useEffect(() => { profileApi.get().then(setProfile).catch(() => {}); }, []);
+  useEffect(() => { certificationsApi.list().then(setCerts).catch(() => {}); }, []);
 
   if (!profile) return null;
 
@@ -16,7 +18,7 @@ export default function About() {
   const stats = [
     { label: 'Experience', value: 2, suffix: '+ yrs' },
     { label: 'Projects', value: 6, suffix: '+' },
-    { label: 'Certifications', value: profile.certifications?.length || 4 },
+    { label: 'Certifications', value: certs.length || 4 },
     { label: 'Languages', value: profile.languages?.length || 4 },
   ];
 

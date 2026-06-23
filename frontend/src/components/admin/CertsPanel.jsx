@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import { certificationsApi } from '../../services/api';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
 import { Plus, X, Save } from 'lucide-react';
@@ -129,7 +130,7 @@ export default function CertsPanel() {
   const [modal, setModal] = useState(null);
 
   const load = useCallback(() => {
-    api.get('/certifications').then(r => setCerts(r.data)).catch(() => {});
+    certificationsApi.list().then(setCerts).catch(() => {});
   }, []);
 
   useEffect(() => { load(); }, [load]);

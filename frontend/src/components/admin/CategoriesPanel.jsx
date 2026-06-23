@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { profileApi } from '../../services/api';
-import api from '../../services/api';
 import toast from 'react-hot-toast';
 
 export default function CategoriesPanel() {
@@ -15,7 +14,7 @@ export default function CategoriesPanel() {
 
   const save = async (cats) => {
     try {
-      const { data } = await api.put('/profile', { projectCategories: cats });
+      const data = await profileApi.update({ projectCategories: cats });
       setCategories(data.projectCategories || []);
       toast.success('Categories saved');
     } catch {

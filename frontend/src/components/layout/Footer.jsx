@@ -22,7 +22,7 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-3">OMAR<span className="text-accent">.</span></h3>
             <p className="text-white/50 text-sm leading-relaxed max-w-xs">
-              Full-Stack Developer &amp; AI Enthusiast. Building modern digital products.
+              Full-Stack Developer & AI Enthusiast. Building modern digital products.
             </p>
           </div>
           <div>
@@ -54,7 +54,7 @@ export default function Footer() {
           <span>&copy; {new Date().getFullYear()} Omar Khecharem. All rights reserved.</span>
           <div className="flex gap-4">
             <a href="/privacy" className="text-white/30 hover:text-white transition-colors">Privacy Policy</a>
-            <span>Available for freelance &amp; internships</span>
+            <span>Available for freelance & internships</span>
           </div>
         </div>
       </div>

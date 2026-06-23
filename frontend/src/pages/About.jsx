@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { profileApi } from '../services/api';
-import api from '../services/api';
+import { profileApi, certificationsApi } from '../services/api';
 import SEO from '../components/ui/SEO';
 import { MapPin, Mail, Award, Download, ExternalLink, X, Calendar } from 'lucide-react';
 
@@ -12,7 +11,7 @@ export default function About() {
 
   useEffect(() => {
     profileApi.get().then(setProfile).catch(() => {});
-    api.get('/certifications').then(r => setCerts(r.data)).catch(() => {});
+    certificationsApi.list().then(setCerts).catch(() => {});
   }, []);
 
   if (!profile) return null;

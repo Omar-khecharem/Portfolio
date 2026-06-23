@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import api from '../../services/api';
+import { messagesApi } from '../../services/api';
 import toast from 'react-hot-toast';
 
 export default function MessagesPanel() {
@@ -8,7 +8,7 @@ export default function MessagesPanel() {
 
   const load = useCallback(async () => {
     try {
-      const { data } = await api.get('/messages');
+      const data = await messagesApi.list();
       setMessages(data);
     } catch {} finally { setLoading(false); }
   }, []);
@@ -16,13 +16,13 @@ export default function MessagesPanel() {
   useEffect(() => { load(); }, [load]);
 
   const markRead = async (id) => {
-    try { await api.put(`/messages/${id}/read`); load(); }
+    try { await messagesApi.markRead(id); load(); }
     catch { toast.error('Failed to update'); }
   };
 
   const handleDelete = async (id) => {
     if (!confirm('Delete this message?')) return;
-    try { await api.delete(`/messages/${id}`); toast.success('Deleted'); load(); }
+    try { await messagesApi.delete(id); toast.success('Deleted'); load(); }
     catch { toast.error('Delete failed'); }
   };
 

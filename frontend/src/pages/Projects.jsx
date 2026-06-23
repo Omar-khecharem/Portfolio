@@ -14,6 +14,39 @@ const item = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
 };
 
+const TECH_COLORS = {
+  react: '#61DAFB', 'next.js': '#000000', vue: '#4FC08D', angular: '#DD0031',
+  'node.js': '#339933', express: '#000000', django: '#092E20', flask: '#000000',
+  mongodb: '#47A248', postgresql: '#4169E1', mysql: '#4479A1', redis: '#DC382D',
+  typescript: '#3178C6', javascript: '#F7DF1E', python: '#3776AB', java: '#ED8B00',
+  tailwind: '#06B6D4', css: '#1572B6', html: '#E34F26', sass: '#CC6699',
+  docker: '#2496ED', aws: '#FF9900', gcp: '#4285F4', firebase: '#FFCA28',
+  tensorflow: '#FF6F00', pytorch: '#EE4C2C', openai: '#412991', langchain: '#1C3C3C',
+  graphql: '#E10098', nginx: '#009639', linux: '#FCC624',
+};
+
+function getTechColor(tech) {
+  const key = tech.toLowerCase();
+  return TECH_COLORS[key] || null;
+}
+
+function TechTag({ name }) {
+  const color = getTechColor(name);
+  return (
+    <motion.span
+      whileHover={{ scale: 1.08, y: -1 }}
+      className="inline-flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-full font-medium transition-colors cursor-default"
+      style={{
+        background: color ? `${color}18` : 'var(--clr-surface)',
+        color: color || 'var(--clr-text-muted)',
+        border: `1px solid ${color ? `${color}30` : 'var(--clr-line)'}`,
+      }}
+    >
+      {name}
+    </motion.span>
+  );
+}
+
 export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [activeCat, setActiveCat] = useState('all');
@@ -61,13 +94,17 @@ export default function Projects() {
             className="flex justify-center gap-2 mb-10 flex-wrap"
           >
             {filterTags.map((cat) => (
-              <button key={cat} onClick={() => setActiveCat(cat)}
+              <motion.button
+                key={cat}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setActiveCat(cat)}
                 className={`px-4 py-2 text-sm font-medium rounded-full transition-all ${
                   activeCat === cat
                     ? 'bg-primary text-white shadow-sm'
                     : 'bg-surface text-text-muted hover:text-text border border-line hover:border-text-muted/30'
                 }`}
-              >{label(cat)}</button>
+              >{label(cat)}</motion.button>
             ))}
           </motion.div>
 
@@ -81,40 +118,48 @@ export default function Projects() {
           >
             {filtered.map((p) => (
               <motion.div key={p._id} variants={item}
-                className="group relative bg-surface border border-line rounded-xl overflow-hidden hover:border-accent/30 transition-all"
+                className="group relative bg-surface border border-line rounded-xl overflow-hidden hover:border-accent/30 transition-all duration-500"
               >
                 {/* Image */}
-                <div className="relative h-44 bg-gradient-to-br from-primary/5 to-accent/5 overflow-hidden">
+                <div className="relative h-44 bg-gradient-to-br from-primary/[0.04] to-accent/[0.04] overflow-hidden">
                   {p.image ? (
                     <>
                       <img src={p.image} alt={p.title}
                         className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <FolderKanban size={36} className="text-primary/15" />
+                      <FolderKanban size={36} className="text-primary/10 group-hover:text-primary/20 transition-colors duration-500" />
                     </div>
                   )}
                   {/* Status badge */}
                   {p.status && (
-                    <span className={`absolute top-3 left-3 text-[10px] px-2 py-0.5 rounded-full font-medium backdrop-blur-sm ${
-                      p.status === 'completed' ? 'bg-green-500/15 text-green-600' :
-                      p.status === 'in-progress' ? 'bg-yellow-500/15 text-yellow-600' : 'bg-blue-500/15 text-blue-600'
-                    }`}>{p.status}</span>
+                    <div className="absolute top-3 left-3">
+                      <span className={`inline-flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-medium backdrop-blur-sm ${
+                        p.status === 'completed' ? 'bg-green-500/12 text-green-600' :
+                        p.status === 'in-progress' ? 'bg-yellow-500/12 text-yellow-600' : 'bg-blue-500/12 text-blue-600'
+                      }`}>
+                        <span className={`w-1 h-1 rounded-full ${
+                          p.status === 'completed' ? 'bg-green-500 animate-pulse' :
+                          p.status === 'in-progress' ? 'bg-yellow-500 animate-pulse' : 'bg-blue-500 animate-pulse'
+                        }`} />
+                        {p.status}
+                      </span>
+                    </div>
                   )}
                   {/* Action buttons */}
-                  <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
                     {p.githubUrl && (
                       <a href={p.githubUrl} target="_blank" rel="noopener noreferrer"
-                        className="w-7 h-7 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-text-muted hover:text-text hover:bg-white transition-all shadow-sm">
-                        <Github size={13} />
+                        className="w-8 h-8 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center text-text-muted hover:text-text hover:bg-white transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5">
+                        <Github size={14} />
                       </a>
                     )}
                     {p.liveUrl && (
                       <a href={p.liveUrl} target="_blank" rel="noopener noreferrer"
-                        className="w-7 h-7 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center text-text-muted hover:text-text hover:bg-white transition-all shadow-sm">
-                        <ExternalLink size={13} />
+                        className="w-8 h-8 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center text-text-muted hover:text-text hover:bg-white transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5">
+                        <ExternalLink size={14} />
                       </a>
                     )}
                   </div>
@@ -125,20 +170,21 @@ export default function Projects() {
                   <p className="text-[10px] uppercase tracking-wider text-text-muted/70 font-semibold mb-1.5">
                     {label(p.category || 'uncategorized')}
                   </p>
-                  <h3 className="font-semibold text-base text-text mb-1.5 leading-snug">{p.title}</h3>
-                  <p className="text-sm text-text-muted line-clamp-2 mb-4 leading-relaxed">{p.description}</p>
+                  <h3 className="font-semibold text-base text-text mb-1.5 leading-snug group-hover:text-accent transition-colors duration-300">{p.title}</h3>
+                  <p className="text-sm text-text-muted leading-relaxed mb-4 line-clamp-2">{p.description}</p>
 
                   {/* Tech tags */}
                   <div className="flex flex-wrap gap-1.5">
                     {p.technologies?.slice(0, 4).map((t) => (
-                      <span key={t}
-                        className="text-[10px] px-2 py-0.5 bg-primary/5 text-text-muted rounded font-medium"
-                      >{t}</span>
+                      <TechTag key={t} name={t} />
                     ))}
                     {p.technologies?.length > 4 && (
-                      <span className="text-[10px] px-2 py-0.5 bg-primary/5 text-text-muted rounded font-medium">
+                      <motion.span
+                        whileHover={{ scale: 1.08 }}
+                        className="text-[11px] px-2.5 py-1 rounded-full font-medium bg-surface text-text-muted border border-line"
+                      >
                         +{p.technologies.length - 4}
-                      </span>
+                      </motion.span>
                     )}
                   </div>
                 </div>

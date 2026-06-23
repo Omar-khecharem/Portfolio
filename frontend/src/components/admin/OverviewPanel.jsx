@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { profileApi, projectsApi } from '../../services/api';
-import api from '../../services/api';
+import { profileApi, projectsApi, certificationsApi } from '../../services/api';
+import { ADMIN_QUICK_ACTIONS } from '../../config/navigation';
 
 export default function OverviewPanel() {
   const [profile, setProfile] = useState(null);
@@ -11,15 +11,15 @@ export default function OverviewPanel() {
     Promise.all([
       profileApi.get().catch(() => null),
       projectsApi.list().catch(() => []),
-      api.get('/certifications').then(r => r.data).catch(() => []),
+      certificationsApi.list().catch(() => []),
     ]).then(([p, pr, c]) => { setProfile(p); setProjects(pr); setCerts(c); });
   }, []);
 
   const cards = [
-    { label: 'Projects', value: projects.length, color: 'bg-[#0a0a23]' },
-    { label: 'Certifications', value: certs.length, color: 'bg-[#e94560]' },
-    { label: 'Skills', value: profile?.skills?.length || 0, color: 'bg-[#1a1a3e]' },
-    { label: 'Services', value: profile?.services?.length || 0, color: 'bg-[#6b7280]' },
+    { label: 'Projects', value: projects.length },
+    { label: 'Certifications', value: certs.length },
+    { label: 'Skills', value: profile?.skills?.length || 0 },
+    { label: 'Services', value: profile?.services?.length || 0 },
   ];
 
   return (
@@ -36,12 +36,7 @@ export default function OverviewPanel() {
 
       <h2 className="text-sm font-semibold text-[#0a0a23] mb-3">Quick Actions</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {[
-          { label: 'Edit Profile', tab: 'profile' },
-          { label: 'Add Project', tab: 'projects' },
-          { label: 'Add Certification', tab: 'certs' },
-          { label: 'Customize Theme', tab: 'theme' },
-        ].map((a) => (
+        {ADMIN_QUICK_ACTIONS.map((a) => (
           <a key={a.label} href={`/admin/dashboard?tab=${a.tab}`}
             onClick={(e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent('admin:nav', { detail: a.tab })); }}
             className="block text-center py-3 px-4 bg-white border border-[#e5e3df] rounded-xl text-sm font-medium text-[#0a0a23] hover:border-[#0a0a23]/30 transition-all"

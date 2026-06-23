@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import SEO from '../components/ui/SEO';
 import { Send, Mail, MapPin, Github, Linkedin, Facebook, Instagram } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { profileApi, messagesApi } from '../services/api';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', type: 'contact' });
@@ -10,9 +11,7 @@ export default function Contact() {
   const [social, setSocial] = useState(null);
 
   useEffect(() => {
-    import('../services/api').then(({ default: api }) => {
-      api.get('/profile').then(r => setSocial(r.data?.social || r.social)).catch(() => {});
-    });
+    profileApi.get().then(p => setSocial(p.social || {})).catch(() => {});
   }, []);
 
   const SOCIALLINKS = [
@@ -30,8 +29,7 @@ export default function Contact() {
     }
     setLoading(true);
     try {
-      const { default: api } = await import('../services/api');
-      await api.post('/messages', form);
+      await messagesApi.send(form);
       toast.success('Message sent! I\'ll get back to you soon.');
       setForm({ name: '', email: '', subject: '', message: '', type: 'contact' });
     } catch {
@@ -64,7 +62,6 @@ export default function Contact() {
           </motion.div>
 
           <div className="lg:grid lg:grid-cols-12 gap-10 max-w-5xl mx-auto">
-            {/* Left: Info */}
             <motion.div
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
@@ -98,7 +95,6 @@ export default function Contact() {
                 </div>
               </div>
 
-              {/* Social */}
               {SOCIALLINKS.length > 0 && (
                 <div className="bg-surface border border-line rounded-xl p-5">
                   <p className="text-xs font-semibold uppercase tracking-[3px] text-text-muted mb-4">Social</p>
@@ -117,7 +113,6 @@ export default function Contact() {
               )}
             </motion.div>
 
-            {/* Right: Form */}
             <motion.div
               initial={{ opacity: 0, x: 16 }}
               animate={{ opacity: 1, x: 0 }}

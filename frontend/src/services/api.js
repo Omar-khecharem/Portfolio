@@ -65,4 +65,8 @@ export const chatConfigApi = {
   create: (data) => api.post('/chat-config', data).then(r => r.data),
 };
 
+export const certificationsApi = {
+  list: () => api.get('/certifications').then(r => r.data),
+};
+
 export default api;

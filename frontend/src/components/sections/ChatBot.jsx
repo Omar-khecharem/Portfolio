@@ -2,20 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, ArrowRight } from 'lucide-react';
-import { profileApi } from '../../services/api';
-
-const DEFAULT_WELCOME = "Hi! I'm Omar's AI assistant. Ask me about his skills, projects, experience, or freelance services!";
-
-const NAV_ACTIONS = [
-  { keywords: ['contact', 'email', 'hire', 'freelance', 'get in touch', 'reach out'], label: 'Go to Contact', path: '/contact' },
-  { keywords: ['project', 'projects', 'portfolio', 'project section'], label: 'View Projects', path: '/projects' },
-  { keywords: ['about', 'biography', 'background', 'who is omar'], label: 'About Omar', path: '/about' },
-  { keywords: ['skill', 'skills', 'technologie', 'tech stack', 'technologies'], label: 'View Skills', path: '/' },
-  { keywords: ['experience', 'experiences', 'work history', 'professional'], label: 'View Experience', path: '/' },
-  { keywords: ['certification', 'certifications', 'certificate', 'certificates'], label: 'View Certifications', path: '/' },
-  { keywords: ['education', 'study', 'studies', 'degree', 'academic'], label: 'View Education', path: '/about' },
-  { keywords: ['service', 'services', 'offer', 'offering'], label: 'View Services', path: '/contact' },
-];
+import { profileApi, chatConfigApi } from '../../services/api';
+import api from '../../services/api';
+import { CHATBOT } from '../../config/constants';
+import { NAV_ACTIONS } from '../../config/navigation';
 
 function getActions(content) {
   if (!content) return [];
@@ -44,7 +34,7 @@ function MsgActions({ actions, onNavigate }) {
 export default function ChatBot() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([{ role: 'assistant', content: DEFAULT_WELCOME, actions: getActions(DEFAULT_WELCOME) }]);
+  const [messages, setMessages] = useState([{ role: 'assistant', content: CHATBOT.welcomeMessage, actions: getActions(CHATBOT.welcomeMessage) }]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState('');
@@ -54,7 +44,7 @@ export default function ChatBot() {
 
   useEffect(() => {
     profileApi.get().then(p => setAvatar(p.image || '')).catch(() => {});
-    fetch('/api/chat-config').then(r => r.json()).then(c => {
+    chatConfigApi.getActive().then(c => {
       if (c?.welcomeMessage) setMessages([{ role: 'assistant', content: c.welcomeMessage, actions: getActions(c.welcomeMessage) }]);
     }).catch(() => {});
   }, []);
@@ -66,20 +56,14 @@ export default function ChatBot() {
     setInput('');
     setLoading(true);
     try {
-      const res = await fetch('/api/chatbot', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          history: messages.slice(-5).map(m => ({ role: m.role, content: m.content })),
-        }),
-      });
-      const data = await res.json();
+      const data = await api.post('/chatbot', {
+        message: text,
+        history: messages.slice(-5).map(m => ({ role: m.role, content: m.content })),
+      }).then(r => r.data);
       const reply = data.reply || '...';
       setMessages((prev) => [...prev, { role: 'assistant', content: reply, actions: getActions(reply) }]);
     } catch {
-      const fallback = "Sorry, I'm having trouble connecting. Email Omar at omar.khecharem@isimg.tn";
-      setMessages((prev) => [...prev, { role: 'assistant', content: fallback, actions: getActions(fallback) }]);
+      setMessages((prev) => [...prev, { role: 'assistant', content: CHATBOT.fallback, actions: getActions(CHATBOT.fallback) }]);
     } finally {
       setLoading(false);
     }

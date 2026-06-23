@@ -109,7 +109,7 @@ export default function Hero() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="text-white/80 text-[10px] sm:text-xs font-semibold tracking-[2px] sm:tracking-[4px] uppercase mb-4 sm:mb-6 max-w-xs sm:max-w-none mx-auto"
         >
-          {(profile.title || 'Full-Stack Developer &amp; AI Enthusiast').split('').map((char, i) => (
+          {(profile.title || 'Full-Stack Developer & AI Enthusiast').split('').map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
@@ -163,7 +163,7 @@ export default function Hero() {
           {profile.available && (
             <>
               <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-              Available for freelance &amp; internships
+              Available for freelance & internships
             </>
           )}
         </motion.div>

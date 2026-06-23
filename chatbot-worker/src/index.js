@@ -92,7 +92,7 @@ export default {
     }
 
     if (request.method !== 'POST') {
-      return Response.json({ answer: 'Method not allowed. Send a POST request.' }, {
+      return Response.json({ reply: 'Method not allowed. Send a POST request.' }, {
         status: 405,
         headers: { 'Access-Control-Allow-Origin': '*' },
       });
@@ -105,7 +105,7 @@ export default {
       const history = body.history || [];
 
       if (!message || typeof message !== 'string' || !message.trim()) {
-        return Response.json({ answer: 'Please ask me a question about Omar.' }, {
+        return Response.json({ reply: 'Please ask me a question about Omar.' }, {
           status: 200,
           headers: { 'Access-Control-Allow-Origin': '*' },
         });
@@ -131,7 +131,7 @@ export default {
 
       const cleanReply = rawReply || 'I can only provide information about Omar\'s professional profile.';
 
-      return Response.json({ answer: cleanReply }, {
+      return Response.json({ reply: cleanReply }, {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
@@ -140,7 +140,7 @@ export default {
     } catch (err) {
       console.error('Worker error:', err);
       return Response.json({
-        answer: "I'm sorry, I'm experiencing a temporary issue. Please reach out to Omar directly at omar.khecharem@isimg.tn and he'll get back to you shortly.",
+        reply: "I'm sorry, I'm experiencing a temporary issue. Please reach out to Omar directly at omar.khecharem@isimg.tn and he'll get back to you shortly.",
       }, {
         status: 200,
         headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
