@@ -15,8 +15,6 @@ services:
       - ADMIN_EMAIL=${ADMIN_EMAIL}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - FRONTEND_URL=https://omarkhecharem.com
-    depends_on:
-      - mongo
 
   frontend:
     build: ./frontend
@@ -26,17 +24,3 @@ services:
       - "80:80"
     depends_on:
       - backend
-
-  mongo:
-    image: mongo:7
-    container_name: omar-mongo
-    restart: unless-stopped
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-    environment:
-      MONGO_INITDB_DATABASE: portfolio
-
-volumes:
-  mongo_data:
