@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { projectsApi, profileApi } from '../services/api';
+import SEO from '../components/ui/SEO';
 import { ExternalLink, Github, FolderKanban } from 'lucide-react';
 
 const container = {
@@ -32,6 +33,11 @@ export default function Projects() {
 
   return (
     <div className="pt-24">
+      <SEO
+        title="Projects"
+        description="Explore Omar Khecharem's portfolio of full-stack applications, AI experiments, and freelance web development projects built with React, Node.js, MongoDB, and more."
+        path="/projects"
+      />
       <section className="py-section">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div

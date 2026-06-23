@@ -1,14 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+
+const AWAY_TITLE = 'Omar Khecharem — Portfolio';
 
 export default function TabTitle() {
-  const originalRef = useRef('');
-
   useEffect(() => {
     const og = document.title;
-    originalRef.current = og;
 
     const handle = () => {
-      document.title = document.hidden ? '👋 Come to our website' : og;
+      document.title = document.hidden ? AWAY_TITLE : og;
     };
 
     document.addEventListener('visibilitychange', handle);

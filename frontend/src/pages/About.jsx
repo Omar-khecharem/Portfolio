@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { profileApi } from '../services/api';
 import api from '../services/api';
+import SEO from '../components/ui/SEO';
 import { MapPin, Mail, Award, Download, ExternalLink, X, Calendar } from 'lucide-react';
 
 export default function About() {
@@ -17,9 +18,16 @@ export default function About() {
   if (!profile) return null;
 
   const initials = profile.name.split(' ').map(w => w[0]).join('').slice(0, 2);
+  const titleDesc = profile.title || 'Full-Stack Developer & AI Enthusiast';
+  const bioDesc = profile.bio || profile.shortBio || '';
 
   return (
     <div className="pt-24">
+      <SEO
+        title={profile.name}
+        description={`Learn more about ${profile.name}, ${titleDesc}. ${bioDesc.slice(0, 150)}`}
+        path="/about"
+      />
       <section className="py-section">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div

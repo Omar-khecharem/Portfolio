@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import SEO from '../components/ui/SEO';
 import { Send, Mail, MapPin, Github, Linkedin, Facebook, Instagram } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -42,6 +43,11 @@ export default function Contact() {
 
   return (
     <div className="pt-24">
+      <SEO
+        title="Contact"
+        description="Get in touch with Omar Khecharem for freelance projects, internships, or collaborations. Full-Stack Developer available in Ariana, Tunisia."
+        path="/contact"
+      />
       <section className="py-section">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div

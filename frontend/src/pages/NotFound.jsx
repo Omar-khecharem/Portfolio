@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
+import SEO from '../components/ui/SEO';
 import { ArrowLeft, Home } from 'lucide-react';
 
 export default function NotFound() {
   return (
     <div className="pt-24">
+      <SEO title="Page Not Found" description="The page you are looking for does not exist or has been moved." path="*" />
       <section className="min-h-[70vh] flex items-center justify-center">
         <div className="max-w-lg mx-auto px-6 text-center">
           <motion.div
