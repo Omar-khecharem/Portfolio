@@ -2,6 +2,7 @@ name: deploy
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -10,14 +11,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Install backend dependencies
-        run: cd backend && npm install
+        working-directory: backend
+        run: npm ci
 
       - name: Install frontend dependencies
-        run: cd frontend && npm install
+        working-directory: frontend
+        run: npm ci
 
       - name: Build frontend
-        run: cd frontend && npm run build
+        working-directory: frontend
+        run: npm run build
 
       - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.3
