@@ -11,7 +11,6 @@ export default function AdminLogin() {
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const [step, setStep] = useState('login');
   const [loading, setLoading] = useState(false);
-  const [resending, setResending] = useState(false);
   const { login, verifyCode, cancelVerification, user, pendingVerification } = useAuth();
   const navigate = useNavigate();
   const codeRefs = useRef([]);

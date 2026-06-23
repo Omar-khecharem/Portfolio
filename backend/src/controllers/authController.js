@@ -39,7 +39,11 @@ exports.login = async (req, res, next) => {
     user.loginCodeExpiresAt = new Date(now.getTime() + CODE_EXPIRY_MS);
     await user.save();
 
-    await sendVerificationCode(user.email, code);
+    try {
+      await sendVerificationCode(user.email, code);
+    } catch (emailErr) {
+      console.error('Failed to send verification email:', emailErr.message);
+    }
 
     res.json({ requiresVerification: true, email: user.email });
   } catch (err) {
