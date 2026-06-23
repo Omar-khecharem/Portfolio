@@ -30,7 +30,12 @@ portfolio/
 - **Responsive UI** — Tailwind CSS with custom theme system (CSS custom properties)
 - **Animated transitions** — page-level and element-level animations via Framer Motion
 - **Dynamic sections** — Hero (slideshow/video), Skills, Projects, Certifications, Experience
-- **AI Chatbot** — contextual assistant powered by Llama 3.1 on Cloudflare Workers, aware of the owner's CV
+- **AI Chatbot** — contextual assistant powered by Llama 3.1 on Cloudflare Workers, aware of the owner's CV, with smart navigation buttons suggesting relevant pages
+- **Interactive chatbot buttons** — keyword-aware navigation suggestions (Contact, Projects, About, Skills, etc.)
+- **Scroll progress indicator** — subtle gradient bar at the top tracking reading progress
+- **Global magnetic hover effect** — buttons and links subtly respond to cursor movement
+- **Morphing mobile menu** — animated `Grip` icon rotating into `X` with smooth framer-motion transitions
+- **Premium monogram favicon** — custom "OK" monogram with gradient background and accent dot
 - **Visitor analytics** — tracks page views, screen size, referrer, browser (anonymized)
 - **Contact form** — with validation and email notifications
 - **Multi-language support** — i18n-ready structure
@@ -65,6 +70,19 @@ portfolio/
 | `react-hot-toast` | Toast notifications |
 | `tailwindcss` 3 | Utility-first CSS |
 | `vite` 5 | Build tool & dev server |
+
+#### UI Components (`src/components/ui/`)
+| Component | Description |
+|---|---|
+| `ScrollProgress` | Fixed reading progress bar with gradient fill |
+| `CustomCursor` | Optional custom cursor with `mix-blend-difference` and magnetic attraction |
+| `FixedAmbient` | Ambient background orbs, shapes, particles with mouse parallax |
+| `GeoShapes` | Floating geometric decorations with floating animations |
+| `AnimatedNumber` | Count-up number animation on scroll |
+| `ScrollToTop` | Scroll-to-top button |
+| `CookieBanner` | GDPR-compliant cookie consent |
+| `VisitTracker` | Anonymous visitor analytics |
+| `TabTitle` | Dynamic title with visibility-based swap |
 
 ### Backend
 | Dependency | Purpose |

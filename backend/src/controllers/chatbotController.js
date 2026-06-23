@@ -86,6 +86,13 @@ Available: ${p.available !== false ? 'Yes – open for freelance and internships
   if (c.briefMode !== false) {
     result += '\n\nIMPORTANT: Be brief. 2-3 sentences max. No markdown.';
   }
+  result += `\n\nAVAILABLE PAGES ON OMAR'S PORTFOLIO:
+- Home page (skills, experience, certifications): /
+- About page: /about
+- Projects page: /projects
+- Contact page: /contact
+
+When the user asks about a topic that has a dedicated page, suggest they can visit that page for more details.`;
   if (c.allowMarkdown) {
     result += '\n\nYou may use basic markdown for formatting.';
   } else {

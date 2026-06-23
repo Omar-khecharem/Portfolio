@@ -4,6 +4,7 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import ChatBot from './components/sections/ChatBot';
 import ScrollToTop from './components/ui/ScrollToTop';
+import ScrollProgress from './components/ui/ScrollProgress';
 import CookieBanner from './components/ui/CookieBanner';
 import VisitTracker from './components/ui/VisitTracker';
 import TabTitle from './components/ui/TabTitle';
@@ -54,6 +55,7 @@ function MainLayout() {
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
+      <ScrollProgress />
       <ScrollToTop />
       <VisitTracker />
       <TabTitle />

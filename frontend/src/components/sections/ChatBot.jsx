@@ -1,13 +1,50 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send } from 'lucide-react';
+import { MessageSquare, X, Send, ArrowRight } from 'lucide-react';
 import { profileApi } from '../../services/api';
 
 const DEFAULT_WELCOME = "Hi! I'm Omar's AI assistant. Ask me about his skills, projects, experience, or freelance services!";
 
+const NAV_ACTIONS = [
+  { keywords: ['contact', 'email', 'hire', 'freelance', 'get in touch', 'reach out'], label: 'Go to Contact', path: '/contact' },
+  { keywords: ['project', 'projects', 'portfolio', 'project section'], label: 'View Projects', path: '/projects' },
+  { keywords: ['about', 'biography', 'background', 'who is omar'], label: 'About Omar', path: '/about' },
+  { keywords: ['skill', 'skills', 'technologie', 'tech stack', 'technologies'], label: 'View Skills', path: '/' },
+  { keywords: ['experience', 'experiences', 'work history', 'professional'], label: 'View Experience', path: '/' },
+  { keywords: ['certification', 'certifications', 'certificate', 'certificates'], label: 'View Certifications', path: '/' },
+  { keywords: ['education', 'study', 'studies', 'degree', 'academic'], label: 'View Education', path: '/about' },
+  { keywords: ['service', 'services', 'offer', 'offering'], label: 'View Services', path: '/contact' },
+];
+
+function getActions(content) {
+  if (!content) return [];
+  const lower = content.toLowerCase();
+  const seen = new Set();
+  return NAV_ACTIONS.filter(a => a.keywords.some(kw => lower.includes(kw)) && !seen.has(a.path) && seen.add(a.path));
+}
+
+function MsgActions({ actions, onNavigate }) {
+  if (!actions || actions.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-2">
+      {actions.map((a) => (
+        <button
+          key={a.path}
+          onClick={() => onNavigate(a.path)}
+          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors"
+        >
+          {a.label} <ArrowRight size={12} />
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function ChatBot() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([{ role: 'assistant', content: DEFAULT_WELCOME }]);
+  const [messages, setMessages] = useState([{ role: 'assistant', content: DEFAULT_WELCOME, actions: getActions(DEFAULT_WELCOME) }]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState('');
@@ -18,7 +55,7 @@ export default function ChatBot() {
   useEffect(() => {
     profileApi.get().then(p => setAvatar(p.image || '')).catch(() => {});
     fetch('/api/chat-config').then(r => r.json()).then(c => {
-      if (c?.welcomeMessage) setMessages([{ role: 'assistant', content: c.welcomeMessage }]);
+      if (c?.welcomeMessage) setMessages([{ role: 'assistant', content: c.welcomeMessage, actions: getActions(c.welcomeMessage) }]);
     }).catch(() => {});
   }, []);
 
@@ -38,9 +75,11 @@ export default function ChatBot() {
         }),
       });
       const data = await res.json();
-      setMessages((prev) => [...prev, { role: 'assistant', content: data.reply || '...' }]);
+      const reply = data.reply || '...';
+      setMessages((prev) => [...prev, { role: 'assistant', content: reply, actions: getActions(reply) }]);
     } catch {
-      setMessages((prev) => [...prev, { role: 'assistant', content: "Sorry, I'm having trouble connecting. Email Omar at omar.khecharem@isimg.tn" }]);
+      const fallback = "Sorry, I'm having trouble connecting. Email Omar at omar.khecharem@isimg.tn";
+      setMessages((prev) => [...prev, { role: 'assistant', content: fallback, actions: getActions(fallback) }]);
     } finally {
       setLoading(false);
     }
@@ -100,7 +139,10 @@ export default function ChatBot() {
                       ? 'bg-primary text-white rounded-br-sm'
                       : 'bg-white border border-[#e5e3df] rounded-bl-sm shadow-sm'
                   }`}>
-                    {m.content}
+                    <p>{m.content}</p>
+                    {m.role === 'assistant' && (
+                      <MsgActions actions={m.actions} onNavigate={navigate} />
+                    )}
                   </div>
                 </div>
               ))}

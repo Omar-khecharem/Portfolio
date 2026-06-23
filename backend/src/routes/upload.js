@@ -26,7 +26,7 @@ router.post('/', protect, (req, res, next) => {
         return res.status(502).json({ message: 'UploadThing upload failed', detail: result.error.message });
       }
 
-      const url = result.data?.url || result.data?.ufsUrl;
+      const url = result.data?.ufsUrl || result.data?.url;
       if (!url) {
         console.error('[UploadThing] no URL in response:', JSON.stringify(result.data));
         return res.status(502).json({ message: 'UploadThing returned no URL' });

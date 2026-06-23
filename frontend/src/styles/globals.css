@@ -179,9 +179,7 @@ body {
   color: #ffffff !important;
 }
 
-.nav-dark .hamburger span {
-  background: #ffffff !important;
-}
+
 
 .card {
   background: var(--clr-surface);

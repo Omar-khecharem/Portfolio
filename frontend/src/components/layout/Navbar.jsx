@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Grip, X } from 'lucide-react';
+import { ease } from '../../utils/animations';
 
 const links = [
   { to: '/', label: 'Home' },
@@ -39,19 +41,27 @@ export default function Navbar() {
           <a href="/contact" className="btn btn-primary !py-2 !px-5 text-sm text-white">Hire Me</a>
         </nav>
 
-        <button className="md:hidden relative w-6 h-5 hamburger" onClick={() => setOpen(!open)} aria-label="Menu">
-          <span className={`absolute left-0 top-0 w-full h-0.5 transition-all ${open ? 'rotate-45 top-2' : ''} ${navDark ? 'bg-white' : 'bg-text'}`} />
-          <span className={`absolute left-0 top-2 w-full h-0.5 transition-all ${open ? 'opacity-0' : ''} ${navDark ? 'bg-white' : 'bg-text'}`} />
-          <span className={`absolute left-0 top-4 w-full h-0.5 transition-all ${open ? '-rotate-45 top-2' : ''} ${navDark ? 'bg-white' : 'bg-text'}`} />
+        <button
+          onClick={() => setOpen(!open)}
+          className={`md:hidden flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 ${navDark ? 'text-white bg-white/8 border border-white/12 hover:bg-white/15' : 'text-text bg-black/5 border border-black/8 hover:bg-black/10'}`}
+          aria-label={open ? 'Close menu' : 'Open menu'}
+        >
+          <motion.div
+            animate={{ rotate: open ? 90 : 0, scale: open ? 0.85 : 1 }}
+            transition={{ duration: 0.35, ease }}
+          >
+            {open ? <X size={20} /> : <Grip size={20} />}
+          </motion.div>
         </button>
       </div>
 
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25, ease }}
             className={`md:hidden overflow-hidden border-t backdrop-blur-xl ${navDark ? 'border-white/20' : 'border-line'}`}
             style={{ background: navDark ? 'rgba(0,0,0,0.15)' : 'var(--clr-surface)' }}
           >
