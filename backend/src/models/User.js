@@ -24,6 +24,18 @@ const userSchema = new mongoose.Schema({
     enum: ['admin'],
     default: 'admin',
   },
+  lastLoginAt: {
+    type: Date,
+    default: null,
+  },
+  loginCode: {
+    type: String,
+    select: false,
+  },
+  loginCodeExpiresAt: {
+    type: Date,
+    select: false,
+  },
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) {

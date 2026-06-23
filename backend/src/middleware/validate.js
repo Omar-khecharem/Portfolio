@@ -33,4 +33,9 @@ const messageRules = [
   body('message').trim().notEmpty().withMessage('Message is required'),
 ];
 
-module.exports = { handleErrors, loginRules, projectRules, certificationRules, messageRules };
+const verifyCodeRules = [
+  body('email').isEmail().withMessage('Valid email is required'),
+  body('code').notEmpty().withMessage('Verification code is required'),
+];
+
+module.exports = { handleErrors, loginRules, verifyCodeRules, projectRules, certificationRules, messageRules };

@@ -7,6 +7,7 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [pendingVerification, setPendingVerification] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -23,14 +24,36 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (email, password) => {
     try {
       const data = await authApi.login(email, password);
+      if (data.requiresVerification) {
+        setPendingVerification({ email: data.email });
+        return { verification: true, email: data.email };
+      }
       localStorage.setItem('token', data.token);
       setUser(data.user);
       toast.success('Welcome back, Omar');
-      return true;
+      return { success: true };
     } catch (e) {
       toast.error(e.response?.data?.message || 'Login failed');
-      return false;
+      return { error: e.response?.data?.message || 'Login failed' };
     }
+  }, []);
+
+  const verifyCode = useCallback(async (email, code) => {
+    try {
+      const data = await authApi.verifyCode(email, code);
+      localStorage.setItem('token', data.token);
+      setUser(data.user);
+      setPendingVerification(null);
+      toast.success('Welcome back, Omar');
+      return { success: true };
+    } catch (e) {
+      toast.error(e.response?.data?.message || 'Verification failed');
+      return { error: e.response?.data?.message || 'Verification failed' };
+    }
+  }, []);
+
+  const cancelVerification = useCallback(() => {
+    setPendingVerification(null);
   }, []);
 
   const logout = useCallback(() => {
@@ -40,7 +63,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, verifyCode, cancelVerification, pendingVerification, logout }}>
       {children}
     </AuthContext.Provider>
   );

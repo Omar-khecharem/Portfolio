@@ -54,6 +54,7 @@ export const messagesApi = {
 
 export const authApi = {
   login: (email, password) => api.post('/auth/login', { email, password }).then(r => r.data),
+  verifyCode: (email, code) => api.post('/auth/verify-code', { email, code }).then(r => r.data),
   me: () => api.get('/auth/me').then(r => r.data),
 };
 
