@@ -16,10 +16,10 @@ export default function About() {
 
   const initials = profile.name.split(' ').map(w => w[0]).join('').slice(0, 2);
   const stats = [
-    { label: 'Experience', value: 2, suffix: '+ yrs' },
-    { label: 'Projects', value: 6, suffix: '+' },
-    { label: 'Certifications', value: certs.length || 4 },
-    { label: 'Languages', value: profile.languages?.length || 4 },
+    { label: 'Experience', value: profile.stats?.experienceYears || 0, suffix: '+ yrs' },
+    { label: 'Projects', value: profile.stats?.projectCount || 0, suffix: '+' },
+    { label: 'Certifications', value: certs.length || 0 },
+    { label: 'Languages', value: profile.languages?.length || 0 },
   ];
 
   return (

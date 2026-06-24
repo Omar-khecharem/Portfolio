@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import {
   LayoutDashboard, User, FolderKanban, Award, Palette,
-  BarChart3, Zap, Mail, Tags, LogOut, BookOpen, Sparkles, Bot,
+  BarChart3, Zap, Mail, Send, Tags, LogOut, BookOpen, Sparkles, Bot,
 } from 'lucide-react';
 
 import OverviewPanel from '../components/admin/OverviewPanel';
@@ -14,6 +14,7 @@ import BackgroundPanel from '../components/admin/BackgroundPanel';
 import AmbiancePanel from '../components/admin/AmbiancePanel';
 import SkillsPanel from '../components/admin/SkillsPanel';
 import MessagesPanel from '../components/admin/MessagesPanel';
+import NewsletterPanel from '../components/admin/NewsletterPanel';
 import ProfilePanel from '../components/admin/ProfilePanel';
 import ProjectsPanel from '../components/admin/ProjectsPanel';
 import CertsPanel from '../components/admin/CertsPanel';
@@ -25,6 +26,7 @@ const TABS = [
   { key: 'analytics', label: 'Analytics', icon: BarChart3 },
   { key: 'profile',   label: 'Profile',   icon: User },
   { key: 'messages', label: 'Messages', icon: Mail },
+  { key: 'newsletter', label: 'Newsletter', icon: Send },
   { key: 'categories', label: 'Categories', icon: Tags },
   { key: 'background', label: 'Background', icon: BookOpen },
   { key: 'skills',      label: 'Skills',      icon: Zap },
@@ -124,6 +126,7 @@ export default function AdminDashboard() {
               {tab === 'background' && <BackgroundPanel />}
               {tab === 'skills' && <SkillsPanel />}
               {tab === 'messages' && <MessagesPanel />}
+              {tab === 'newsletter' && <NewsletterPanel />}
               {tab === 'profile'  && <ProfilePanel />}
               {tab === 'projects' && <ProjectsPanel />}
               {tab === 'certs'    && <CertsPanel />}

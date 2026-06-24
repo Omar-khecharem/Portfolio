@@ -4,7 +4,6 @@ const { sendTokenResponse } = require('../utils/jwt');
 const { sendVerificationCode } = require('../utils/email');
 
 const CODE_EXPIRY_MS = 10 * 60 * 1000;
-const LOGIN_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
 
 const generateCode = () => {
   return crypto.randomInt(100000, 999999).toString();
@@ -25,15 +24,6 @@ exports.login = async (req, res, next) => {
     }
 
     const now = new Date();
-    const lastLogin = user.lastLoginAt;
-    const isRecent = lastLogin && (now.getTime() - lastLogin.getTime() < LOGIN_COOLDOWN_MS);
-
-    if (isRecent) {
-      user.lastLoginAt = now;
-      await user.save();
-      return sendTokenResponse(user, 200, res);
-    }
-
     const code = generateCode();
     user.loginCode = code;
     user.loginCodeExpiresAt = new Date(now.getTime() + CODE_EXPIRY_MS);

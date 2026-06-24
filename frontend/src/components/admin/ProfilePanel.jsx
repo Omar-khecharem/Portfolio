@@ -9,6 +9,7 @@ export default function ProfilePanel() {
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadingPdf, setUploadingPdf] = useState(false);
 
   useEffect(() => {
     profileApi.get().then((p) => { setProfile(p); setForm(p); });
@@ -84,9 +85,19 @@ export default function ProfilePanel() {
               <input type="text" value={form.image || ''} onChange={(e) => setForm({...form, image: e.target.value})}
                 placeholder="Image URL"
                 className="w-full mb-2 px-3 py-2 text-sm border border-[#e5e3df] rounded-lg bg-[#fafaf8] focus:outline-none focus:border-[#0a0a23]/30" />
-              <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-[#0a0a23] text-white rounded-lg cursor-pointer hover:bg-[#e94560] transition-colors">
-                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-                {uploading ? 'Uploading...' : 'Upload Image'}
+      <label className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg cursor-pointer transition-colors ${
+        uploading ? 'bg-[#0a0a23]/60 pointer-events-none' : 'bg-[#0a0a23] hover:bg-[#e94560]'
+      }`}>
+        <input type="file" accept="image/*" onChange={handleImageUpload} disabled={uploading} className="hidden" />
+        {uploading ? (
+  <span className="inline-flex items-center gap-1.5">
+    <svg className="animate-spin w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4 31.4" className="opacity-30" />
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4 31.4" strokeDashoffset="10" className="opacity-90" />
+    </svg>
+    Uploading...
+  </span>
+) : 'Upload Image'}
               </label>
             </div>
             {form.image && (
@@ -120,10 +131,11 @@ export default function ProfilePanel() {
             <input type="url" value={form.resumeUrl || ''} onChange={(e) => setForm({...form, resumeUrl: e.target.value})}
               placeholder="CV URL (PDF)"
               className="w-full mb-2 px-3 py-2 text-sm border border-[#e5e3df] rounded-lg bg-[#fafaf8] focus:outline-none focus:border-[#0a0a23]/30" />
-            <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-[#0a0a23] text-white rounded-lg cursor-pointer hover:bg-[#e94560] transition-colors">
+            <label className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-[#0a0a23] text-white rounded-lg cursor-pointer hover:bg-[#e94560] transition-colors disabled:opacity-50">
               <input type="file" accept=".pdf,application/pdf" onChange={async (e) => {
                 const file = e.target.files?.[0];
-                if (!file) return;
+                if (!file || uploadingPdf) return;
+                setUploadingPdf(true);
                 const fd = new FormData();
                 fd.append('file', file);
                 try {
@@ -131,8 +143,17 @@ export default function ProfilePanel() {
                   setForm({...form, resumeUrl: data.url });
                   toast.success('CV uploaded');
                 } catch (err) { toast.error(err.response?.data?.message || 'Upload failed'); }
+                finally { setUploadingPdf(false); }
               }} className="hidden" />
-              Upload PDF
+              {uploadingPdf ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <svg className="animate-spin w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4 31.4" className="opacity-30" />
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4 31.4" strokeDashoffset="10" className="opacity-90" />
+                  </svg>
+                  Uploading...
+                </span>
+              ) : 'Upload PDF'}
             </label>
           </div>
           {form.resumeUrl && (

@@ -3,22 +3,35 @@ import { profileApi } from '../../services/api';
 import toast from 'react-hot-toast';
 import { Plus, Save } from 'lucide-react';
 
+function getDefaultColor(skills) {
+  const existing = skills.find(s => s.color);
+  return existing?.color || '#e94560';
+}
+
 export default function SkillsPanel() {
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [globalColor, setGlobalColor] = useState('#e94560');
 
   const loadSkills = useCallback(async () => {
     try {
       const profile = await profileApi.get();
-      setSkills(profile.skills || []);
+      const s = profile.skills || [];
+      setSkills(s);
+      setGlobalColor(getDefaultColor(s));
     } catch {} finally { setLoading(false); }
   }, []);
 
   useEffect(() => { loadSkills(); }, [loadSkills]);
 
+  const updateGlobalColor = (color) => {
+    setGlobalColor(color);
+    setSkills(skills.map(s => ({ ...s, color })));
+  };
+
   const addSkill = () => {
-    setSkills([...skills, { name: '', category: 'frontend', level: 70, color: '#e94560' }]);
+    setSkills([...skills, { name: '', category: 'frontend', level: 70, color: globalColor }]);
   };
 
   const updateSkill = (i, field, value) => {
@@ -59,6 +72,14 @@ export default function SkillsPanel() {
         </div>
       </div>
 
+      <div className="bg-white rounded-xl border border-[#e5e3df] p-4 mb-4 flex items-center gap-4">
+        <label className="text-xs font-medium text-[#6b7280]">Skills Color</label>
+        <input type="color" value={globalColor} onChange={(e) => updateGlobalColor(e.target.value)}
+          className="w-9 h-9 p-0.5 rounded cursor-pointer border border-[#e5e3df]" />
+        <span className="text-xs text-[#6b7280]">{globalColor}</span>
+        <span className="text-[11px] text-[#9ca3af]">— Applied to all skills</span>
+      </div>
+
       <div className="bg-white rounded-xl border border-[#e5e3df] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -67,7 +88,6 @@ export default function SkillsPanel() {
                 <th className="text-left p-3 font-medium text-[#6b7280] text-xs">Name</th>
                 <th className="text-left p-3 font-medium text-[#6b7280] text-xs w-28">Category</th>
                 <th className="text-left p-3 font-medium text-[#6b7280] text-xs w-56">Level</th>
-                <th className="text-left p-3 font-medium text-[#6b7280] text-xs w-16">Color</th>
                 <th className="text-right p-3 font-medium text-[#6b7280] text-xs w-12">Actions</th>
               </tr>
             </thead>
@@ -91,10 +111,6 @@ export default function SkillsPanel() {
                         className="flex-1" />
                       <span className="text-xs font-medium text-[#6b7280] w-8 text-right">{s.level}%</span>
                     </div>
-                  </td>
-                  <td className="p-3">
-                    <input type="color" value={s.color || '#e94560'} onChange={(e) => updateSkill(i, 'color', e.target.value)}
-                      className="w-8 h-8 p-0.5 rounded cursor-pointer border border-[#e5e3df]" />
                   </td>
                   <td className="p-3 text-right">
                     <button onClick={() => removeSkill(i)} className="p-1.5 text-[#6b7280] hover:text-[#e94560] transition-colors" title="Remove">

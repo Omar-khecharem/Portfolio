@@ -1,6 +1,6 @@
 # Omar Khecharem — Portfolio
 
-A modern, full-stack portfolio platform built with **React**, **Node.js**, **MongoDB**, and **Cloudflare Workers AI**. Features a live admin dashboard with real-time analytics, theme customization, and an AI-powered chatbot.
+A modern, full-stack portfolio platform built with **React**, **Node.js**, **MongoDB**, and **Cloudflare Workers AI**. Features a live admin dashboard with real-time analytics, theme customization, newsletter management, and an AI-powered chatbot.
 
 ![Stack](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
@@ -29,30 +29,35 @@ portfolio/
 ### Public Site
 - **Responsive UI** — Tailwind CSS with custom theme system (CSS custom properties)
 - **Animated transitions** — page-level and element-level animations via Framer Motion
-- **Dynamic sections** — Hero (slideshow/video), Skills, Projects, Certifications, Experience
-- **AI Chatbot** — contextual assistant powered by Llama 3.1 on Cloudflare Workers, aware of the owner's CV, with smart navigation buttons suggesting relevant pages
-- **Interactive chatbot buttons** — keyword-aware navigation suggestions (Contact, Projects, About, Skills, etc.)
+- **Dynamic sections** — Hero with scroll indicator & marquee tech bar, Skills, Projects (with detail modal), Certifications, Social Links
+- **AI Chatbot** — contextual assistant powered by Llama 3.1 on Cloudflare Workers, drop-in spring animation, keyword-aware navigation buttons
+- **Newsletter popup** — premium slide-in after 5s with email capture, stores subscription in localStorage
 - **Scroll progress indicator** — subtle gradient bar at the top tracking reading progress
-- **Global magnetic hover effect** — buttons and links subtly respond to cursor movement
+- **Cinematic navbar logo** — letter-reveal animation (fade + scale + blur per char), dot pulse, diagonal shimmer sweep
+- **Letter-animation loader** — CSS-only "Omar" loader on slow connections, fades out on React mount
 - **Morphing mobile menu** — animated `Grip` icon rotating into `X` with smooth framer-motion transitions
 - **Premium monogram favicon** — custom "OK" monogram with gradient background and accent dot
 - **Visitor analytics** — tracks page views, screen size, referrer, browser (anonymized)
 - **Contact form** — with validation and email notifications
 - **Multi-language support** — i18n-ready structure
 - **Cookie consent** — GDPR-compliant banner
-- **SEO** — dynamic tab titles per route
+- **SEO** — dynamic tab titles per route, JSON-LD structured data, sitemap, robots.txt
 
 ### Admin Dashboard (`/admin/dashboard`)
 | Tab | Description |
 |-----|-------------|
 | **Overview** | Quick stats + action shortcuts |
 | **Analytics** | Charts (daily/hourly visits, top pages, browsers, recent visitors) |
-| **Profile** | Full CRUD for personal info, social links, languages, CV upload |
-| **Projects** | Create / edit / delete portfolio projects |
-| **Certifications** | Manage certifications with image upload |
-| **Skills** | Inline-editable skill table with categories |
+| **Profile** | Full CRUD for personal info, social links, languages, CV/image upload with spinner |
 | **Messages** | Inbox with read/unread status |
+| **Newsletter** | Subscriber email list with subscription dates |
 | **Categories** | Manage project category taxonomy |
+| **Background** | Academic & professional background (education, experience, services) |
+| **Skills** | Inline-editable skill table with global color picker |
+| **Projects** | Create / edit / delete portfolio projects with image upload spinner |
+| **Certifications** | Manage certifications with image upload spinner |
+| **Ambiance** | Ambient background customization |
+| **Chatbot** | AI assistant configuration (welcome message, personality) |
 | **Theme** | Live theme customizer (colors, hero background, spacing) with presets |
 
 ---
@@ -81,6 +86,9 @@ portfolio/
 | `AnimatedNumber` | Count-up number animation on scroll |
 | `ScrollToTop` | Scroll-to-top button |
 | `CookieBanner` | GDPR-compliant cookie consent |
+| `NewsletterPopup` | Email capture popup with spring animation and localStorage persistence |
+| `ProjectDetailModal` | Full project detail view with image, long description, highlights, techs, links |
+| `MarqueeBar` | Scrolling tech names bar in Hero section |
 | `VisitTracker` | Anonymous visitor analytics |
 | `TabTitle` | Dynamic title with visibility-based swap |
 
@@ -149,6 +157,7 @@ Fill in the required values:
 | `JWT_SECRET` | Secret for signing auth tokens |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Admin login credentials |
 | `CLOUDFLARE_*` | Cloudflare API credentials (chatbot) |
+| `EMAIL_HOST` / `EMAIL_USER` / `EMAIL_PASS` | SMTP credentials for email verification |
 
 ### 3. Seed the Database
 
@@ -211,12 +220,12 @@ Secrets required in the repository:
 backend/
 ├── src/
 │   ├── config/db.js              # Mongoose connection
-│   ├── controllers/              # Route handlers (9 resources)
+│   ├── controllers/              # Route handlers (10 resources)
 │   ├── middleware/                # Auth, upload, validation, error handling
-│   ├── models/                   # Mongoose schemas (7 models)
+│   ├── models/                   # Mongoose schemas (8 models)
 │   ├── routes/                   # Express routers
 │   ├── services/                 # Business logic
-│   ├── utils/jwt.js              # Token helpers
+│   ├── utils/                    # JWT, email helpers
 │   ├── seed.js                   # Admin + profile seeder
 │   ├── seed-themes.js            # Theme presets seeder
 │   └── server.js                 # Entry point
@@ -224,9 +233,9 @@ backend/
 frontend/
 ├── src/
 │   ├── components/
-│   │   ├── admin/                # 9 dashboard panel components
+│   │   ├── admin/                # 11 dashboard panel components
 │   │   ├── layout/               # Navbar, Footer
-│   │   ├── sections/             # Hero, Skills, Projects, etc.
+│   │   ├── sections/             # Hero (scroll indicator, marquee, social), Skills, Projects, etc.
 │   │   └── ui/                   # Reusable widgets
 │   ├── contexts/                 # AuthContext, ThemeContext
 │   ├── pages/                    # Route-level page components
@@ -245,7 +254,8 @@ chatbot-worker/
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| POST | `/api/auth/login` | — | Admin login |
+| POST | `/api/auth/login` | — | Admin login (sends verification code) |
+| POST | `/api/auth/verify-code` | — | Verify 2FA code & receive JWT |
 | GET | `/api/auth/me` | ✓ | Current user |
 | GET/PUT | `/api/profile` | ✓* | Profile CRUD |
 | GET/POST | `/api/projects` | ✓* | Projects list / create |
@@ -262,6 +272,7 @@ chatbot-worker/
 | POST | `/api/upload` | ✓ | File upload |
 | POST | `/api/chat` | — | AI chatbot |
 | POST | `/api/newsletter` | — | Newsletter subscription |
+| GET | `/api/newsletter` | ✓ | List subscribers |
 
 > `✓*` — Public read, admin-only write.
 

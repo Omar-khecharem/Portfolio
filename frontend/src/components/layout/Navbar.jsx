@@ -27,8 +27,15 @@ export default function Navbar() {
   return (
     <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-400 ${navDark ? '' : 'glass-deep'} ${navDark ? 'nav-dark' : ''}`}>
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16 md:h-20">
-          <a href="/" className="text-lg font-bold tracking-tight">
-            OMAR<span className={navDark ? 'text-white/80' : 'text-accent'}>.</span>
+          <a href="/" className="group relative logo-container text-xl md:text-2xl font-extrabold tracking-tight">
+            <span className="relative inline-flex">
+              <span className="logo-char" style={{ animationDelay: '0s' }}>O</span>
+              <span className="logo-char" style={{ animationDelay: '0.06s' }}>M</span>
+              <span className="logo-char" style={{ animationDelay: '0.12s' }}>A</span>
+              <span className="logo-char" style={{ animationDelay: '0.18s' }}>R</span>
+              <span className={`logo-dot ${navDark ? 'text-white/80' : 'text-accent'}`}>.</span>
+            </span>
+            <span className="logo-shimmer" />
           </a>
 
           <nav className="hidden md:flex items-center gap-8">

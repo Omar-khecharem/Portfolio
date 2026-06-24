@@ -17,11 +17,6 @@ export const CHATBOT = {
   fallback: "Sorry, I'm having trouble connecting. Email Omar at omar.khecharem@isimg.tn",
 };
 
-export const STATS = {
-  experienceYears: 2,
-  projectCount: 6,
-};
-
 export const API = {
   timeout: 15000,
 };

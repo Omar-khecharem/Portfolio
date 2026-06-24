@@ -13,7 +13,7 @@ export default function NotFound() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="text-[120px] sm:text-[160px] font-bold leading-none text-primary/10 select-none">
+            <span className="text-[120px] sm:text-[160px] font-bold leading-none text-primary/20 select-none">
               404
             </span>
           </motion.div>
@@ -31,7 +31,7 @@ export default function NotFound() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="text-text-muted mt-3 leading-relaxed text-sm sm:text-base"
+            className="text-text/70 mt-3 leading-relaxed text-sm sm:text-base"
           >
             The page you're looking for doesn't exist or has been moved.
             Let's get you back on track.

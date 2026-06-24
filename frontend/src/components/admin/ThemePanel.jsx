@@ -217,7 +217,12 @@ export default function ThemePanel() {
                   ))}
                   <label className="w-20 h-14 rounded-lg border-2 border-dashed border-[#e5e3df] flex items-center justify-center cursor-pointer hover:border-[#0a0a23]/30 transition-colors bg-[#fafaf8]">
                     <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-                    {uploading ? <span className="text-[10px] text-[#6b7280]">...</span> : <Plus size={16} className="text-[#6b7280]" />}
+                    {uploading ? (
+  <svg className="animate-spin w-4 h-4 text-[#6b7280]" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4 31.4" className="opacity-30" />
+    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4 31.4" strokeDashoffset="10" className="opacity-90" />
+  </svg>
+) : <Plus size={16} className="text-[#6b7280]" />}
                   </label>
                 </div>
                 {(form.hero.images?.length || (form.hero.imageUrl ? 1 : 0)) > 1 && (

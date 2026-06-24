@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { profileApi } from '../../services/api';
 import { useTheme } from '../../contexts/ThemeContext';
 import GeoShapes from '../ui/GeoShapes';
+import MarqueeBar from '../ui/MarqueeBar';
 
 export default function Hero() {
   const [profile, setProfile] = useState(null);
@@ -167,6 +168,25 @@ export default function Hero() {
             </>
           )}
         </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.6 }}
+          className="mt-10 flex justify-center"
+        >
+          <div className="flex flex-col items-center gap-1.5 text-white/25">
+            <svg width="20" height="32" viewBox="0 0 20 32" fill="none" className="animate-scroll-mouse">
+              <rect x="1.5" y="1.5" width="17" height="29" rx="8.5" stroke="currentColor" strokeWidth="2" />
+              <circle cx="10" cy="10" r="2" fill="currentColor" className="animate-scroll-wheel" />
+            </svg>
+            <span className="text-[10px] font-medium tracking-widest uppercase">Scroll</span>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="absolute bottom-0 left-0 right-0 z-20">
+        <MarqueeBar />
       </div>
     </section>
   );

@@ -282,6 +282,59 @@ body {
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
+@keyframes logoCharIn {
+  0% { opacity: 0; transform: translateY(16px) scale(0.7); filter: blur(8px); }
+  60% { opacity: 1; transform: translateY(-2px) scale(1.05); filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+.logo-char {
+  display: inline-block;
+  opacity: 0;
+  animation: logoCharIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes logoDotPulse {
+  0%, 100% { opacity: 0.8; text-shadow: 0 0 4px currentColor; }
+  50% { opacity: 1; text-shadow: 0 0 12px currentColor, 0 0 24px currentColor; }
+}
+.logo-dot {
+  display: inline-block;
+  animation: logoDotPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes logoShimmer {
+  0% { transform: translateX(-100%) skewX(-20deg); }
+  60% { transform: translateX(200%) skewX(-20deg); }
+  100% { transform: translateX(200%) skewX(-20deg); }
+}
+.logo-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+  pointer-events: none;
+  animation: logoShimmer 4s ease-in-out 0.8s infinite;
+}
+
+.logo-container {
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes scrollMouse {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(4px); opacity: 1; }
+}
+@keyframes scrollWheel {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(4px); opacity: 1; }
+}
+.animate-scroll-mouse {
+  animation: scrollMouse 2.5s ease-in-out infinite;
+}
+.animate-scroll-wheel {
+  animation: scrollWheel 2s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

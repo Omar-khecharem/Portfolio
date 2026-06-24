@@ -6,6 +6,7 @@ import ChatBot from './components/sections/ChatBot';
 import ScrollToTop from './components/ui/ScrollToTop';
 import ScrollProgress from './components/ui/ScrollProgress';
 import CookieBanner from './components/ui/CookieBanner';
+import NewsletterPopup from './components/ui/NewsletterPopup';
 import VisitTracker from './components/ui/VisitTracker';
 import TabTitle from './components/ui/TabTitle';
 import FixedAmbient from './components/ui/FixedAmbient';
@@ -47,6 +48,7 @@ function MainLayout() {
         <Footer />
         <ChatBot />
         <CookieBanner />
+        <NewsletterPopup />
       </div>
     </>
   );

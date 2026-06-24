@@ -5,6 +5,7 @@ import Experience from '../components/sections/Experience';
 import FeaturedProjects from '../components/sections/FeaturedProjects';
 import Skills from '../components/sections/Skills';
 import Certifications from '../components/sections/Certifications';
+import SocialLinks from '../components/sections/SocialLinks';
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <FeaturedProjects />
       <Skills />
       <Certifications />
+      <SocialLinks />
     </>
   );
 }

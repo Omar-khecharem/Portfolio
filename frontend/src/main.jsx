@@ -7,7 +7,9 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import App from './App';
 import './styles/globals.css';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider>
@@ -22,3 +24,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </BrowserRouter>
   </React.StrictMode>
 );
+
+requestAnimationFrame(() => {
+  const loader = document.getElementById('app-loader');
+  if (loader) loader.classList.add('hidden');
+});

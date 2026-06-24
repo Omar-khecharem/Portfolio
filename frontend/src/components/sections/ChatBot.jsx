@@ -71,22 +71,25 @@ export default function ChatBot() {
 
   return (
     <>
-      <button
+      <motion.button
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.5, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         onClick={() => setOpen(true)}
         className="fixed bottom-6 right-6 z-40 w-13 h-13 bg-primary text-white rounded-full shadow-lg hover:bg-accent transition-all flex items-center justify-center hover:scale-105 animate-pulse-ring"
         style={{ width: 52, height: 52 }}
         aria-label="Chat with Omar Assistant"
       >
         <MessageSquare size={20} />
-      </button>
+      </motion.button>
 
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 16, scale: 0.96 }}
+            initial={{ opacity: 0, y: -30, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.96 }}
-            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ type: 'spring', damping: 24, stiffness: 280 }}
             className="fixed bottom-24 right-6 z-40 w-[360px] max-w-[calc(100vw-48px)] bg-white rounded-2xl shadow-2xl border border-line overflow-hidden"
           >
             <div className="flex items-center justify-between p-4 bg-primary text-white">
