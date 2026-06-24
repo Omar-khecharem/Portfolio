@@ -38,7 +38,7 @@ portfolio/
 - **Morphing mobile menu** — animated `Grip` icon rotating into `X` with smooth framer-motion transitions
 - **Premium monogram favicon** — custom "OK" monogram with gradient background and accent dot
 - **Visitor analytics** — tracks page views, screen size, referrer, browser (anonymized)
-- **Contact form** — with validation and email notifications
+- **Contact form** — with real-time email validation (DNS MX record check) and email notifications
 - **Multi-language support** — i18n-ready structure
 - **Cookie consent** — GDPR-compliant banner
 - **SEO** — dynamic tab titles per route, JSON-LD structured data, sitemap, robots.txt
@@ -46,7 +46,7 @@ portfolio/
 ### Admin Dashboard (`/admin/dashboard`)
 | Tab | Description |
 |-----|-------------|
-| **Overview** | Quick stats + action shortcuts |
+| **Overview** | 8 stat cards (incl. visits, unread, subs), 12 quick actions, recent messages & projects |
 | **Analytics** | Charts (daily/hourly visits, top pages, browsers, recent visitors) |
 | **Profile** | Full CRUD for personal info, social links, languages, CV/image upload with spinner |
 | **Messages** | Inbox with read/unread status |
@@ -273,6 +273,7 @@ chatbot-worker/
 | POST | `/api/chat` | — | AI chatbot |
 | POST | `/api/newsletter` | — | Newsletter subscription |
 | GET | `/api/newsletter` | ✓ | List subscribers |
+| POST | `/api/messages/validate-email` | — | Check if email domain accepts mail (MX record) |
 
 > `✓*` — Public read, admin-only write.
 

@@ -1,14 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import SEO from '../components/ui/SEO';
-import { Send, Mail, MapPin, Github, Linkedin, Facebook, Instagram } from 'lucide-react';
+import { Send, Mail, MapPin, Github, Linkedin, Facebook, Instagram, CheckCircle, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { profileApi, messagesApi } from '../services/api';
+import api from '../services/api';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', type: 'contact' });
   const [loading, setLoading] = useState(false);
   const [social, setSocial] = useState(null);
+  const [emailValid, setEmailValid] = useState(null);
+  const [emailChecking, setEmailChecking] = useState(false);
 
   useEffect(() => {
     profileApi.get().then(p => setSocial(p.social || {})).catch(() => {});
@@ -21,10 +24,30 @@ export default function Contact() {
     { icon: Instagram, href: social?.instagram, label: 'Instagram' },
   ].filter(s => s.href);
 
+  const validateEmail = useCallback(async (email) => {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailValid(null);
+      return;
+    }
+    setEmailChecking(true);
+    try {
+      const res = await api.post('/messages/validate-email', { email });
+      setEmailValid(res.data.valid);
+    } catch {
+      setEmailValid(null);
+    } finally {
+      setEmailChecking(false);
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
       toast.error('Please fill in required fields');
+      return;
+    }
+    if (emailValid === false) {
+      toast.error('Please provide a valid email address');
       return;
     }
     setLoading(true);
@@ -32,6 +55,7 @@ export default function Contact() {
       await messagesApi.send(form);
       toast.success('Message sent! I\'ll get back to you soon.');
       setForm({ name: '', email: '', subject: '', message: '', type: 'contact' });
+      setEmailValid(null);
     } catch {
       toast.error('Failed to send. Please try again or email directly.');
     } finally {
@@ -127,11 +151,34 @@ export default function Contact() {
                       className="w-full px-4 py-2.5 text-sm border border-line rounded-xl bg-surface focus:outline-none focus:border-primary/40 focus:bg-white transition-all"
                       placeholder="Your name" />
                   </div>
-                  <div className="group">
+                  <div className="group relative">
                     <label className="block text-xs font-medium text-text-muted mb-1.5">Email *</label>
-                    <input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})}
-                      className="w-full px-4 py-2.5 text-sm border border-line rounded-xl bg-surface focus:outline-none focus:border-primary/40 focus:bg-white transition-all"
-                      placeholder="your@email.com" />
+                    <div className="relative">
+                      <input type="email" value={form.email}
+                        onChange={e => {
+                          setForm({...form, email: e.target.value});
+                          if (emailValid !== null) setEmailValid(null);
+                        }}
+                        onBlur={() => validateEmail(form.email)}
+                        className={`w-full px-4 py-2.5 text-sm border rounded-xl bg-surface focus:outline-none focus:bg-white transition-all pr-10 ${
+                          emailValid === true ? 'border-green-400 focus:border-green-500' :
+                          emailValid === false ? 'border-red-400 focus:border-red-500' :
+                          'border-line focus:border-primary/40'
+                        }`}
+                        placeholder="your@email.com" />
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                        {emailChecking ? (
+                          <span className="w-4 h-4 border-2 border-text-muted/30 border-t-primary rounded-full animate-spin block" />
+                        ) : emailValid === true ? (
+                          <CheckCircle size={16} className="text-green-500" />
+                        ) : emailValid === false ? (
+                          <XCircle size={16} className="text-red-500" />
+                        ) : null}
+                      </div>
+                    </div>
+                    {emailValid === false && (
+                      <p className="text-xs text-red-500 mt-1">This email domain does not appear valid</p>
+                    )}
                   </div>
                 </div>
                 <div>
