@@ -92,7 +92,7 @@ export default function FeaturedProjects() {
                 onClick={() => setSelected(p)}
                 className="group relative bg-surface border border-line rounded-xl overflow-hidden hover:border-accent/30 transition-all duration-500 cursor-pointer"
               >
-                <div className="relative h-40 sm:h-44 bg-gradient-to-br from-primary/[0.04] to-accent/[0.04] overflow-hidden">
+                <div className="relative aspect-video bg-gradient-to-br from-primary/[0.04] to-accent/[0.04] overflow-hidden">
                   {p.image ? (
                     <>
                       <img src={p.image} alt={p.title} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" />

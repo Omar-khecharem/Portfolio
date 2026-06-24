@@ -36,9 +36,8 @@ export default function ProjectDetailModal({ project, onClose }) {
           </button>
 
           {project.image && (
-            <div className="relative w-full h-56 sm:h-64 bg-gradient-to-br from-primary/[0.04] to-accent/[0.04] overflow-hidden">
-              <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent" />
+            <div className="relative w-full aspect-video bg-gradient-to-br from-primary/[0.04] to-accent/[0.04] overflow-hidden">
+              <img src={project.image} alt={project.title} className="w-full h-full object-contain" />
             </div>
           )}
 

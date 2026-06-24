@@ -27,7 +27,7 @@ portfolio/
 ## Features
 
 ### Public Site
-- **Responsive UI** — Tailwind CSS with custom theme system (CSS custom properties)
+- **Responsive UI** — Tailwind CSS with custom theme system (CSS custom properties), consistent `aspect-ratio` image containers preventing cropped content
 - **Animated transitions** — page-level and element-level animations via Framer Motion
 - **Dynamic sections** — Hero with scroll indicator & marquee tech bar, Skills, Projects (with detail modal), Certifications, Social Links
 - **AI Chatbot** — contextual assistant powered by Llama 3.1 on Cloudflare Workers, drop-in spring animation, keyword-aware navigation buttons
@@ -54,8 +54,8 @@ portfolio/
 | **Categories** | Manage project category taxonomy |
 | **Background** | Academic & professional background (education, experience, services) |
 | **Skills** | Inline-editable skill table with global color picker |
-| **Projects** | Create / edit / delete portfolio projects with image upload spinner |
-| **Certifications** | Manage certifications with image upload spinner |
+| **Projects** | Create / edit / delete portfolio projects with image upload spinner, `object-contain` preview |
+| **Certifications** | Manage certifications with image upload spinner, `object-contain` preview |
 | **Ambiance** | Ambient background customization |
 | **Chatbot** | AI assistant configuration (welcome message, personality) |
 | **Theme** | Live theme customizer (colors, hero background, spacing) with presets |

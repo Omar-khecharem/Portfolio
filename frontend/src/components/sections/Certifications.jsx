@@ -45,7 +45,7 @@ export default function Certifications() {
               className="group relative bg-surface border border-line rounded-xl overflow-hidden hover:border-accent/30 transition-all duration-500 cursor-pointer"
               onClick={() => setSelected(c)}
             >
-              <div className="relative h-36 sm:h-44 bg-gradient-to-br from-primary/[0.04] to-accent/[0.04] overflow-hidden">
+              <div className="relative aspect-[4/3] bg-gradient-to-br from-primary/[0.04] to-accent/[0.04] overflow-hidden">
                 {c.image ? (
                   <>
                     <img src={c.image} alt={c.name} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" />
@@ -108,8 +108,8 @@ export default function Certifications() {
               onClick={(e) => e.stopPropagation()}
             >
               {selected.image && (
-                <div className="w-full aspect-[16/9] bg-surface overflow-hidden rounded-t-2xl">
-                  <img src={selected.image} alt={selected.name} className="w-full h-full object-cover" />
+                <div className="w-full bg-surface overflow-hidden rounded-t-2xl flex items-center justify-center p-4">
+                  <img src={selected.image} alt={selected.name} className="w-full max-h-[50vh] object-contain rounded-lg" />
                 </div>
               )}
               <div className="p-6">

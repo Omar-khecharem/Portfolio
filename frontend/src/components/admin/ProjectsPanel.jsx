@@ -143,8 +143,8 @@ function ProjectModal({ project, onClose, onSaved }) {
                 </label>
               </div>
               {form.image && (
-                <div className="w-20 h-20 rounded-lg overflow-hidden border border-[#e5e3df] flex-shrink-0 bg-[#fafaf8]">
-                  <img src={form.image} alt="preview" className="w-full h-full object-cover"
+                <div className="w-32 aspect-video rounded-lg overflow-hidden border border-[#e5e3df] flex-shrink-0 bg-[#fafaf8]">
+                  <img src={form.image} alt="preview" className="w-full h-full object-contain"
                     onError={(e) => { e.target.style.display = 'none' }} />
                 </div>
               )}
@@ -256,8 +256,8 @@ export default function ProjectsPanel() {
                   <tr key={p._id} className="border-b border-[#e5e3df] hover:bg-[#fafaf8]/50">
                     <td className="p-3">
                       {p.image ? (
-                        <div className="w-10 h-10 rounded-lg overflow-hidden border border-[#e5e3df] bg-[#fafaf8]">
-                          <img src={p.image} alt="" className="w-full h-full object-cover"
+                        <div className="w-12 h-12 rounded-lg overflow-hidden border border-[#e5e3df] bg-[#fafaf8] p-0.5">
+                          <img src={p.image} alt="" className="w-full h-full object-contain"
                             onError={(e) => { e.target.style.display = 'none' }} />
                         </div>
                       ) : (

@@ -134,7 +134,7 @@ export default function Projects() {
                   className="group relative bg-surface border border-line rounded-xl overflow-hidden hover:border-accent/30 transition-all duration-500 cursor-pointer"
                 >
                   {/* Image */}
-                  <div className="relative h-44 bg-gradient-to-br from-primary/[0.04] to-accent/[0.04] overflow-hidden">
+                  <div className="relative aspect-video bg-gradient-to-br from-primary/[0.04] to-accent/[0.04] overflow-hidden">
                     {p.image ? (
                       <>
                         <img src={p.image} alt={p.title}
