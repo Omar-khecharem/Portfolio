@@ -105,6 +105,8 @@ const seed = async () => {
         status: 'completed',
         featured: true,
         order: 1,
+        githubUrl: 'https://github.com/Omar-khecharem',
+        liveUrl: 'https://portfolio-blue-rho-21.vercel.app',
         highlights: ['First Prize Winner', 'Judged by industry experts'],
       },
       {
@@ -116,6 +118,8 @@ const seed = async () => {
         status: 'completed',
         featured: true,
         order: 2,
+        githubUrl: 'https://github.com/Omar-khecharem/Portfolio',
+        liveUrl: 'https://portfolio-blue-rho-21.vercel.app',
         highlights: ['JWT Authentication', 'RESTful API', 'Responsive UI'],
       },
       {
@@ -127,15 +131,16 @@ const seed = async () => {
         status: 'in-progress',
         featured: false,
         order: 3,
+        githubUrl: 'https://github.com/Omar-khecharem',
         highlights: ['LLM Integration', 'Prompt Engineering'],
       },
     ]);
 
     await Certification.create([
-      { name: 'AI for Anomaly Detection', issuer: 'NVIDIA', date: '2024', order: 1 },
-      { name: 'Generative AI', issuer: 'Udacity', date: '2024', order: 2 },
-      { name: 'Scrum Fundamentals Certified', issuer: 'Scrum Study', date: '2024', order: 3 },
-      { name: 'Google Cloud Fundamentals', issuer: 'Google', date: '2024', order: 4 },
+      { name: 'AI for Anomaly Detection', issuer: 'NVIDIA', date: '2024', order: 1, credentialUrl: 'https://learn.nvidia.com/certificates' },
+      { name: 'Generative AI', issuer: 'Udacity', date: '2024', order: 2, credentialUrl: 'https://www.udacity.com/certificates' },
+      { name: 'Scrum Fundamentals Certified', issuer: 'Scrum Study', date: '2024', order: 3, credentialUrl: 'https://www.scrumstudy.com/certification' },
+      { name: 'Google Cloud Fundamentals', issuer: 'Google', date: '2024', order: 4, credentialUrl: 'https://cloud.google.com/learn/certification' },
     ]);
 
     await Theme.create([
