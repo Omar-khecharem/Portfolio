@@ -79,8 +79,8 @@ const sendVerificationCode = async (email, code) => {
     `,
   });
 
+  console.log(`[VERIFICATION CODE] ${email}: ${code}`);
   if (process.env.NODE_ENV !== 'production' || !process.env.EMAIL_HOST) {
-    console.log(`[DEV] Verification code for ${email}: ${code}`);
     console.log(`[DEV] Preview URL: ${nodemailer.getTestMessageUrl(info)}`);
   }
 
