@@ -28,14 +28,6 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
-  loginCode: {
-    type: String,
-    select: false,
-  },
-  loginCodeExpiresAt: {
-    type: Date,
-    select: false,
-  },
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) {
